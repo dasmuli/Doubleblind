@@ -1,14 +1,17 @@
 
+///////////////////  Unit  /////////////
 function Unit(name,mapX,mapY) {
   this.name = name;
   this.mapX = mapX;
   this.mapY = mapY;
   return this;
 }
+
 Unit.prototype.MoveTo = function(xMapPos,yMapPos) {
   this.mapX = xMapPos;
   this.mapY = yMapPos;
 }
+
 Unit.prototype.IsInMovementRange = function(xMapPos,yMapPos) {
 	if(Math.abs(xMapPos-this.mapX) <= 1
 	  && Math.abs(yMapPos-this.mapY) <= 1)
@@ -17,10 +20,16 @@ Unit.prototype.IsInMovementRange = function(xMapPos,yMapPos) {
 	  return false;
 }
 
-var testUnit = new Unit('Archer',2,0)
-var selectedUnit = undefined
 var AllUnits = []
+var selectedUnit = undefined  // better in UIControl?
+
+var testUnit = new Unit('Archer',2,0)
 AllUnits.push( testUnit )
+
+
+///////////////////  Map  /////////////
+// Does NOT have x/y positions - unit values
+// are important. The Map is rerendered every step.
 
 function Map(width,height) {
   this.width = width;
@@ -133,12 +142,16 @@ Map.prototype.drawRect = function(xMapPos,yMapPos) {
 var map = new Map(12,8)
 map.draw()
 
+
+
+
 ///////////////////  UI Controller  /////////////
 var UIController = {
 	mapView : document.getElementById('MapView'),
-	mainMenu : document.getElementById('mainMenu'),
+	mainMenu : document.getElementById('MainMenu'),
 	basicHelp : document.getElementById('BasicHelp'),
 	editView : document.getElementById('EditView'),
+	editWarning : document.getElementById('EditWarning'),
 	addUnitView : document.getElementById('AddUnitView'),
 	firstStart : true,
 	showMainMenu:function()
@@ -158,6 +171,7 @@ var UIController = {
 		this.addUnitView.style.display = "none"
 		this.mainMenu.style.display = "none"
 		this.editView.style.display = "none"
+		this.editWarning.style.display = "none"
 	},
 	showMap: function()
 	{
@@ -168,6 +182,11 @@ var UIController = {
 	{
 		this.hideEverything()
 		this.editView.style.display = "block"
+	},
+	showEditWarning: function()
+	{
+		this.hideEverything()
+		this.editWarning.style.display = "block"
 	},
 	showAddUnit: function()
 	{

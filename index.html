@@ -63,6 +63,24 @@
   </div>
   
   
+  <div class="container" id="MainMenu">
+    <div class="row"  style="margin-top: 5%">
+      <div class="one-half column">
+        <h4>Main menu</h4>
+		<p>Hand over to the other side or edit the game.</p>
+	  </div>
+    </div>
+	<div class="row">
+	  <div class="one-half column">
+		<button onclick="UIController.showMap()">Map</button>
+	  </div>
+	  <div class="one-half column">
+		<button onclick="UIController.showEditWarning()">Edit</button>
+	  </div>
+	</div>
+  </div>
+  
+  
   <div class="container" id="EditView">
     <div class="row" id="UnitList">
       <div class="one-half column">
@@ -97,13 +115,20 @@
   </div>
   
   
-  <div class="container" id="mainMenu">
-		<div class="row"  style="margin-top: 5%">
-		  <div class="one-half column">
-			<button onclick="UIController.showMap()">Map</button>
+  <div class="container" id="EditWarning">
+    <div class="row"  style="margin-top: 5%">
+      <div class="one-half column">
+        <h4>Edit warning</h4>
+		<p>Do you really want to see all units? This will
+		uncover everything - no more uncertainty.</p>
+	  </div>
+    </div>
+	<div class="row">
+	   <div class="one-half column">
+			<button onclick="UIController.showMainMenu()">Back</button>
 		  </div>
 		  <div class="one-half column">
-			<button onclick="UIController.showEdit()">Edit</button>
+			<button onclick="UIController.showEdit()">Edit now!</button>
 		  </div>
 		</div>
   </div>
