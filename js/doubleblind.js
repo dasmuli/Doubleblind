@@ -38,6 +38,7 @@ function Map(width,height) {
   this.height = height;
   this.svg = document.getElementById('SVGMap');
   this.ns = 'http://www.w3.org/2000/svg'
+  this.selectPositionMode = false
   return this;
 }
 Map.prototype.draw = function() {
@@ -104,6 +105,11 @@ Map.prototype.drawText = function(xMapPos,yMapPos,textToShow,
 	this.svg.appendChild(text)
 };
 Map.prototype.PositionClicked = function(xMapPos,yMapPos) {
+  if(this.selectPositionMode)
+  {
+	  UIController.addUnitAtPosition(xMapPos,yMapPos)
+	  return;
+  }
   if(selectedUnit != undefined) // move a unit that was selected
   {
 	 if(selectedUnit.IsInMovementRange(xMapPos,yMapPos))
@@ -202,7 +208,14 @@ var UIController = {
 	addUnit: function()
 	{
 		this.hideEverything()
-		new Unit(this.unitNameInput.value,'Add',3,0)
+		map.selectPositionMode = true
+		this.showMap()
+	},
+	addUnitAtPosition: function(mapX,mapY)
+	{
+		map.selectPositionMode = false
+		new Unit(this.unitNameInput.value,'Add',mapX,mapY)
+		map.draw()
 		this.showEdit()
 	},
 	updateUnitList: function()
