@@ -135,13 +135,11 @@ map.draw()
 
 ///////////////////  UI Controller  /////////////
 var UIController = {
-	mapView : document.getElementById('SVGMap'),
+	mapView : document.getElementById('MapView'),
 	mainMenu : document.getElementById('mainMenu'),
-	mapControl : document.getElementById('MapControl'),
-	unitList : document.getElementById('UnitList'),
 	basicHelp : document.getElementById('BasicHelp'),
 	editView : document.getElementById('EditView'),
-	addUnit : document.getElementById('AddUnit'),
+	addUnitView : document.getElementById('AddUnitView'),
 	firstStart : true,
 	showMainMenu:function()
 	{
@@ -153,18 +151,18 @@ var UIController = {
 		if(this.firstStart == true)
 		  this.firstStart = false
 		else
+		{
 			this.basicHelp.style.display = "none"
-		this.mapView.style.display = "none"
-		this.addUnit.style.display = "none"
+			this.mapView.style.display = "none"
+		}
+		this.addUnitView.style.display = "none"
 		this.mainMenu.style.display = "none"
-		this.mapControl.style.display = "none"
 		this.editView.style.display = "none"
 	},
 	showMap: function()
 	{
 		this.hideEverything()
 		this.mapView.style.display = "block"
-		this.mapControl.style.display = "block"
 	},
 	showEdit: function()
 	{
@@ -174,7 +172,7 @@ var UIController = {
 	showAddUnit: function()
 	{
 		this.hideEverything()
-		this.addUnit.style.display = "block"
+		this.addUnitView.style.display = "block"
 	},
 }
 UIController.showMap()
