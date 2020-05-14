@@ -17,7 +17,7 @@ Unit.prototype.IsInMovementRange = function(xMapPos,yMapPos) {
 	  return false;
 }
 
-var testUnit = new Unit('Embiggens',3,2)
+var testUnit = new Unit('Archer',2,0)
 var selectedUnit = undefined
 var AllUnits = []
 AllUnits.push( testUnit )
@@ -138,6 +138,11 @@ var UIController = {
 	mapView : document.getElementById('SVGMap'),
 	mainMenu : document.getElementById('mainMenu'),
 	mapControl : document.getElementById('MapControl'),
+	unitList : document.getElementById('UnitList'),
+	basicHelp : document.getElementById('BasicHelp'),
+	editControl : document.getElementById('EditControl'),
+	addUnit : document.getElementById('AddUnit'),
+	firstStart : true,
 	showMainMenu:function()
 	{
 		this.hideEverything()
@@ -145,15 +150,33 @@ var UIController = {
 	},
 	hideEverything:function()
 	{
+		if(this.firstStart == true)
+		  this.firstStart = false
+		else
+			this.basicHelp.style.display = "none"
 		this.mapView.style.display = "none"
+		this.addUnit.style.display = "none"
+		this.unitList.style.display = "none"
 		this.mainMenu.style.display = "none"
 		this.mapControl.style.display = "none"
+		this.editControl.style.display = "none"
 	},
 	showMap: function()
 	{
 		this.hideEverything()
 		this.mapView.style.display = "block"
 		this.mapControl.style.display = "block"
-	}
+	},
+	showEdit: function()
+	{
+		this.hideEverything()
+		this.unitList.style.display = "block"
+		this.editControl.style.display = "block"
+	},
+	showAddUnit: function()
+	{
+		this.hideEverything()
+		this.addUnit.style.display = "block"
+	},
 }
 UIController.showMap()
