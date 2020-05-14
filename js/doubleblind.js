@@ -1,9 +1,13 @@
 
 ///////////////////  Unit  /////////////
-function Unit(name,mapX,mapY) {
+var Offmap = -1
+var AllUnits = []
+function Unit(name,description,mapX,mapY) {
   this.name = name;
   this.mapX = mapX;
   this.mapY = mapY;
+  this.description = description;
+  AllUnits.push( this )
   return this;
 }
 
@@ -20,11 +24,9 @@ Unit.prototype.IsInMovementRange = function(xMapPos,yMapPos) {
 	  return false;
 }
 
-var AllUnits = []
-var selectedUnit = undefined  // better in UIControl?
 
-var testUnit = new Unit('Archer',2,0)
-AllUnits.push( testUnit )
+var selectedUnit = undefined  // better in UIControl?
+var testUnit = new Unit('Archer','Cmd 8',2,0)
 
 
 ///////////////////  Map  /////////////
@@ -183,6 +185,7 @@ var UIController = {
 	showEdit: function()
 	{
 		this.hideEverything()
+		this.updateUnitList()
 		this.editView.style.display = "block"
 	},
 	showEditWarning: function()
@@ -198,12 +201,23 @@ var UIController = {
 	addUnit: function()
 	{
 		this.hideEverything()
-		var clone = this.unitListTemplate.content.cloneNode(true);
-		var td = clone.querySelectorAll("td");
-		td[0].textContent = "New name"
-		td[1].textContent = "New description"
-		this.unitListTable.appendChild(clone)
+		new Unit('Test','Add',3,0)
 		this.showEdit()
+	},
+	updateUnitList: function()
+	{
+		var new_tbody = document.createElement('tbody')
+		for (var i = 0, li = AllUnits.length; i < li; i++)
+        {
+			var clone = this.unitListTemplate.content.cloneNode(true);
+			var td = clone.querySelectorAll("td");
+			td[0].textContent = AllUnits[i].name
+			td[1].textContent = AllUnits[i].description
+			new_tbody.appendChild(clone)
+        }
+		this.unitListTable.parentNode.replaceChild(
+		  new_tbody, this.unitListTable)
+		this.unitListTable = new_tbody
 	},
 }
 UIController.showMap()
