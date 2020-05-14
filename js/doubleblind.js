@@ -2,6 +2,7 @@
 ///////////////////  Unit  /////////////
 var Offmap = -1
 var AllUnits = []
+
 function Unit(name,description,mapX,mapY) {
   this.name = name;
   this.mapX = mapX;
@@ -24,14 +25,13 @@ Unit.prototype.IsInMovementRange = function(xMapPos,yMapPos) {
 	  return false;
 }
 
-
 var selectedUnit = undefined  // better in UIControl?
 var testUnit = new Unit('Archer','Cmd 8',2,0)
 
 
 ///////////////////  Map  /////////////
 // Does NOT have x/y positions - unit values
-// are important. The Map is rerendered every step.
+// are important. The Map is rerendered every select/move.
 
 function Map(width,height) {
   this.width = width;
@@ -112,7 +112,7 @@ Map.prototype.PositionClicked = function(xMapPos,yMapPos) {
 	 }
     selectedUnit = undefined	
   }
-  else // remove selection and select unit on position
+  else // remove selection and select unit on this position
   {
 	  selectedUnit = undefined
 	  var units = this.getUnitsAtPosition(xMapPos,yMapPos);
@@ -157,6 +157,7 @@ var UIController = {
 	addUnitView : document.getElementById('AddUnitView'),
 	unitListTemplate : document.querySelector('#UnitListTemplate'),
 	unitListTable : document.querySelector('#UnitListTable'),
+	unitNameInput : document.querySelector('#NewUnitName'),
 	firstStart : true,
 	showMainMenu:function()
 	{
@@ -201,7 +202,7 @@ var UIController = {
 	addUnit: function()
 	{
 		this.hideEverything()
-		new Unit('Test','Add',3,0)
+		new Unit(this.unitNameInput.value,'Add',3,0)
 		this.showEdit()
 	},
 	updateUnitList: function()
