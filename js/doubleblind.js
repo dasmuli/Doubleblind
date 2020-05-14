@@ -132,3 +132,28 @@ Map.prototype.drawRect = function(xMapPos,yMapPos) {
 
 var map = new Map(12,8)
 map.draw()
+
+///////////////////  UI Controller  /////////////
+var UIController = {
+	mapView : document.getElementById('SVGMap'),
+	mainMenu : document.getElementById('mainMenu'),
+	mapControl : document.getElementById('MapControl'),
+	showMainMenu:function()
+	{
+		this.hideEverything()
+		this.mainMenu.style.display = "block"
+	},
+	hideEverything:function()
+	{
+		this.mapView.style.display = "none"
+		this.mainMenu.style.display = "none"
+		this.mapControl.style.display = "none"
+	},
+	showMap: function()
+	{
+		this.hideEverything()
+		this.mapView.style.display = "block"
+		this.mapControl.style.display = "block"
+	}
+}
+UIController.showMap()

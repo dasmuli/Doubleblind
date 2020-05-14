@@ -32,13 +32,7 @@
 
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <svg height="99vh" viewBox="0 0 120 80"
-	id="SVGMap">
-	<style>
-	</svg>
-	<br>
-  <button>Done</button>
-		<!----
+		
   <div class="container">
     <div class="row">
       <div class="one-half column" style="margin-top: 25%">
@@ -47,87 +41,22 @@
       </div>
 	</div>
 	<div class="row">
-      <div style="margin-top: 25%">
-        
+      <div>
+        <svg viewBox="0 0 120 80"  id="SVGMap">
+		</svg>
       </div>
 	</div>
-	<div class="row">
-      <div  style="margin-top: 25%">
-        <div class="square-container">
-		  <div class="square">
-			<div class="content">
-				<div class="nested">a</div>
-				<div class="nested">b</div>
-				<div class="nested">c</div>
-			</div>
-		  </div>
-		  <div class="square">
-			<div class="content"> some content here</div>
-		  </div>
-		  <div class="square">
-			<div class="content"> some content here</div>
-		  </div>
-		  <div class="square">
-			<div class="content"> some content here</div>
-		  </div>
-		  <div class="square">
-			<div class="content column">some content here and there is a lot of text here</div>
-		  </div>
-		  <div class="square">
-			<div class="content spread">text</div>
-		  </div>
-		  <div class="square">
-			<div class="content column">some text here</div>
-		  </div>
-		  <div class="square">
-			<div class="content column">some text here</div>
-		  </div>
-		  <div class="square">
-			<div class="content column">some text here</div>
-		  </div>
-		  <div class="square">
-			<div class="content column">some text here</div>
-		  </div>
-		  <div class="square">
-			<div class="content column">some text here</div>
-		  </div>
-		  <div class="square">
-			<div class="content column">some text here</div>
-		  </div>
-		  <div class="square">
-			<div class="content column">some text here</div>
-		  </div>
-		  <div class="square">
-			<div class="content column">some text here</div>
-		  </div>
-		  <div class="square">
-			<div class="content column">some text here</div>
-		  </div>
-		  <div class="square">
-			<div class="content column">some text here</div>
-		  </div>
-		  <div class="square">
-			<div class="content column">some text here</div>
-		  </div>
-		  <div class="square">
-			<div class="content column">some text here</div>
-		  </div>
-		  <div class="square">
-			<div class="content column">some text here</div>
-		  </div>
-		  <div class="square">
-			<div class="content column">some text here</div>
-		  </div>
-		  <div class="square">
-			<div class="content column">some text here</div>
-		  </div>
-		  <div class="square">
-			<div class="content column">some text here</div>
-		  </div>
-		</div>
+	<div class="row" id="MapControl">
+      <div  style="margin-top: 5%" >
+        <button onclick="UIController.showMainMenu()">Done</button>
       </div>
 	</div>
-	<div class="row">
+	<div class="row" id="mainMenu">
+      <div class="column" style="margin-top: 25%">
+	    <button onclick="UIController.showMap()">Map</button>
+	  </div>
+	</div>
+	<div class="row" id="Units">
       <div class="one-half column" style="margin-top: 25%">
         <table class="u-full-width">
 		  <thead>
@@ -156,7 +85,7 @@
       </div>
     </div>
   </div>
-  --->
+ 
 <script src="js/doubleblind.js"></script>
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
