@@ -140,7 +140,7 @@ var UIController = {
 	mapControl : document.getElementById('MapControl'),
 	unitList : document.getElementById('UnitList'),
 	basicHelp : document.getElementById('BasicHelp'),
-	editControl : document.getElementById('EditControl'),
+	editView : document.getElementById('EditView'),
 	addUnit : document.getElementById('AddUnit'),
 	firstStart : true,
 	showMainMenu:function()
@@ -156,10 +156,9 @@ var UIController = {
 			this.basicHelp.style.display = "none"
 		this.mapView.style.display = "none"
 		this.addUnit.style.display = "none"
-		this.unitList.style.display = "none"
 		this.mainMenu.style.display = "none"
 		this.mapControl.style.display = "none"
-		this.editControl.style.display = "none"
+		this.editView.style.display = "none"
 	},
 	showMap: function()
 	{
@@ -170,8 +169,7 @@ var UIController = {
 	showEdit: function()
 	{
 		this.hideEverything()
-		this.unitList.style.display = "block"
-		this.editControl.style.display = "block"
+		this.editView.style.display = "block"
 	},
 	showAddUnit: function()
 	{

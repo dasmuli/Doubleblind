@@ -70,7 +70,11 @@
 		  </div>
 		</div>
 	</div>
-	<div class="row" id="UnitList">
+  </div>
+  
+  
+  <div class="container" id="EditView">
+    <div class="row" id="UnitList">
       <div class="one-half column">
         <table class="u-full-width">
 		  <thead>
@@ -92,9 +96,9 @@
 		</table>
       </div>
     </div>
-	<div class="row" id="EditControl">
+    <div class="row">
       <div   class="one-half column">
-        <button onclick="UIController.showAddUnit()">Add</button>
+        <button onclick="UIController.showAddUnit()">New</button>
       </div>
 	  <div   class="one-half column">
         <button onclick="UIController.showMainMenu()">Done</button>
@@ -102,8 +106,12 @@
 	</div>
   </div>
   
+  
+  <div class="container" id="">
+  </div>
+  
   <div class="container" id="AddUnit">
-    <form onsubmit="UIController.showMainMenu();return false;">    
+    <form onsubmit="UIController.showEdit();return false;">    
 	  <div class="row"  id="BasicHelp">
 	  
         <div class="six columns">
