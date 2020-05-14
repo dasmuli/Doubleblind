@@ -49,6 +49,7 @@
 		this app to the other side.</p>
       </div>
 	</div>
+	
 	<div class="row"  style="margin-top: 5%">
       <div>
         <svg viewBox="0 0 120 80"  id="SVGMap">
@@ -91,7 +92,7 @@
 			  <th>Description</th>
 			</tr>
 		  </thead>
-		  <tbody>
+		  <tbody id="UnitListTable">
 			<tr>
 			  <td>Archer</td>
 			  <td>Strength 4</td>
@@ -102,6 +103,14 @@
 			</tr>
 		  </tbody>
 		</table>
+		
+		<template id="UnitListTemplate">
+		  <tr>
+			  <td>Name</td>
+			  <td>Description</td>
+		  </tr>
+		</template> 
+
       </div>
     </div>
     <div class="row">
@@ -135,7 +144,7 @@
   
   
   <div class="container" id="AddUnitView">
-    <form onsubmit="UIController.showEdit();return false;">    
+    <form onsubmit="UIController.addUnit();return false;">    
 	  <div class="row"  id="BasicHelp">
 	  
         <div class="six columns">

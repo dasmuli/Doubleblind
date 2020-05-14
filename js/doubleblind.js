@@ -153,6 +153,8 @@ var UIController = {
 	editView : document.getElementById('EditView'),
 	editWarning : document.getElementById('EditWarning'),
 	addUnitView : document.getElementById('AddUnitView'),
+	unitListTemplate : document.querySelector('#UnitListTemplate'),
+	unitListTable : document.querySelector('#UnitListTable'),
 	firstStart : true,
 	showMainMenu:function()
 	{
@@ -192,6 +194,16 @@ var UIController = {
 	{
 		this.hideEverything()
 		this.addUnitView.style.display = "block"
+	},
+	addUnit: function()
+	{
+		this.hideEverything()
+		var clone = this.unitListTemplate.content.cloneNode(true);
+		var td = clone.querySelectorAll("td");
+		td[0].textContent = "New name"
+		td[1].textContent = "New description"
+		this.unitListTable.appendChild(clone)
+		this.showEdit()
 	},
 }
 UIController.showMap()
