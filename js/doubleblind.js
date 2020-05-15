@@ -44,7 +44,8 @@ function Map(width,height) {
   this.svg = document.getElementById('SVGMap')
   this.ns = 'http://www.w3.org/2000/svg'
   this.selectPositionMode = false
-  this.visibleSet = new Set()
+  this.visibleSet = [ new Set(), new Set()]
+  this.revealedPosition = new Set()
   return this;
 }
 Map.prototype.draw = function() {
@@ -64,24 +65,40 @@ Map.prototype.posAsString = function(mapX,mapY) {
 	return mapX+","+mapY
 };
 Map.prototype.calculateVisibility = function() {
-	this.visibleSet.clear()
-	for (var i = 0, li = AllUnits.length; i < li; i++)
-    {
-		if(AllUnits[i].faction == this.showFaction)
+	this.revealedPosition.clear()
+	// calculate for all factions
+	for(var faction = 0; faction < Faction.length; faction++)
+	{
+		this.visibleSet[faction].clear()
+		for (var i = 0, li = AllUnits.length; i < li; i++)
 		{
-			// add all adjacent positions as strings to the
-			// visibility map
-			for (var x = -1; x <= 1; x++)
-            {
-				for (var y = -1; y <= 1; y++)
+			if(AllUnits[i].faction == faction)
+			{
+				// add all adjacent positions as strings to the
+				// visibility map
+				for (var x = -1; x <= 1; x++)
 				{
-				  this.visibleSet.add( this.posAsString(
-				    AllUnits[i].mapX+x,
-					AllUnits[i].mapY+y ) )
+					for (var y = -1; y <= 1; y++)
+					{
+					  this.visibleSet[faction].add( this.posAsString(
+						AllUnits[i].mapX+x,
+						AllUnits[i].mapY+y ) )
+					}
 				}
 			}
 		}
-    }
+		// mark enemy positions that are visible
+		for (var i = 0, li = AllUnits.length; i < li; i++)
+		{
+			if(AllUnits[i].faction != faction
+			   && this.visibleSet[faction].has(
+			   this.posAsString(AllUnits[i].mapX,AllUnits[i].mapY) ) )
+			{
+			  this.revealedPosition.add( this.posAsString(
+				AllUnits[i].mapX,AllUnits[i].mapY) )
+			}
+		}
+	}
 };
 Map.prototype.getUnitsAtPosition = function(xMapPos,yMapPos) {
   var UnitsAtPosition = [];
@@ -102,7 +119,7 @@ Map.prototype.drawUnitsAtRect = function(xMapPos,yMapPos) {
 	  if(AllUnits[i].mapX == xMapPos &&
 	     AllUnits[i].mapY == yMapPos &&
 		 (AllUnits[i].faction == this.showFaction
-		 || this.visibleSet.has(this.posAsString(xMapPos,yMapPos) ) ) )
+		 || this.visibleSet[this.showFaction].has(this.posAsString(xMapPos,yMapPos) ) ) )
 	  {
 		  //UnitsAtPosition.push(AllUnits[i]);
 		  if(AllUnits[i] == selectedUnit)
@@ -161,7 +178,10 @@ Map.prototype.PositionClicked = function(xMapPos,yMapPos) {
 	  }
   }
   this.draw()
-}
+};
+Map.prototype.isPositionRevealed = function(xMapPos,yMapPos) {
+	return this.revealedPosition.has(this.posAsString(xMapPos,yMapPos))
+};
 Map.prototype.drawRect = function(xMapPos,yMapPos) {
 	var rect = document.createElementNS(this.ns, 'rect')
 	rect.setAttributeNS(null, 'x',xMapPos*10+1)
@@ -171,6 +191,12 @@ Map.prototype.drawRect = function(xMapPos,yMapPos) {
 	if(selectedUnit && Math.abs(xMapPos-selectedUnit.mapX) <= 1
 	  && Math.abs(yMapPos-selectedUnit.mapY) <= 1)
 	  rect.setAttributeNS(null, 'fill', '#A1A1A1')
+	else if(this.isPositionRevealed(xMapPos,yMapPos))
+	{
+	  rect.setAttributeNS(null, 'fill', '#FFF')
+	  rect.setAttributeNS(null, 'stroke','black')
+	  rect.setAttributeNS(null, 'stroke-width','0.1')
+	}
 	else
 	  rect.setAttributeNS(null, 'fill', '#E1E1E1')
 	rect.setAttributeNS(null, 'onclick', "map.PositionClicked("
