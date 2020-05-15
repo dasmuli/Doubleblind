@@ -1,6 +1,7 @@
 
 ///////////////////  Unit  /////////////
-var Offmap = -1
+const Offmap = -1
+const AllFactions = -2
 var AllUnits = []
 var Faction = [ "Union", "Confederates" ]
 
@@ -29,6 +30,7 @@ Unit.prototype.IsInMovementRange = function(xMapPos,yMapPos) {
 
 var selectedUnit = undefined  // better in UIControl?
 var testUnit = new Unit('Archer','Cmd 8',2,0,1)
+var testUnit2 = new Unit('Iron Brigade','Cmd 7',5,5,0)
 
 
 ///////////////////  Map  /////////////
@@ -36,9 +38,10 @@ var testUnit = new Unit('Archer','Cmd 8',2,0,1)
 // are important. The Map is rerendered every select/move.
 
 function Map(width,height) {
-  this.width = width;
-  this.height = height;
-  this.svg = document.getElementById('SVGMap');
+  this.showFaction = 1
+  this.width = width
+  this.height = height
+  this.svg = document.getElementById('SVGMap')
   this.ns = 'http://www.w3.org/2000/svg'
   this.selectPositionMode = false
   return this;
@@ -72,7 +75,8 @@ Map.prototype.drawUnitsAtRect = function(xMapPos,yMapPos) {
   for (var i = 0, li = AllUnits.length; i < li; i++)
   {
 	  if(AllUnits[i].mapX == xMapPos &&
-	     AllUnits[i].mapY == yMapPos)
+	     AllUnits[i].mapY == yMapPos &&
+		 AllUnits[i].faction == this.showFaction)
 	  {
 		  //UnitsAtPosition.push(AllUnits[i]);
 		  if(AllUnits[i] == selectedUnit)
