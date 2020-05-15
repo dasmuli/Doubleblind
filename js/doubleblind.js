@@ -44,12 +44,14 @@ function Map(width,height) {
   this.svg = document.getElementById('SVGMap')
   this.ns = 'http://www.w3.org/2000/svg'
   this.selectPositionMode = false
+  this.visibleSet = new Set()
   return this;
 }
 Map.prototype.draw = function() {
   while (this.svg.lastChild) {
     this.svg.removeChild(this.svg.lastChild);
   }
+  this.calculateVisibility()
   for (var y = 0, ly = this.height; y < ly; y++)
   {
 	  for (var x = 0, lx = this.width; x < lx; x++)
@@ -57,6 +59,29 @@ Map.prototype.draw = function() {
 		this.drawRect(x,y);
 	  }
   }
+};
+Map.prototype.posAsString = function(mapX,mapY) {
+	return mapX+","+mapY
+};
+Map.prototype.calculateVisibility = function() {
+	this.visibleSet.clear()
+	for (var i = 0, li = AllUnits.length; i < li; i++)
+    {
+		if(AllUnits[i].faction == this.showFaction)
+		{
+			// add all adjacent positions as strings to the
+			// visibility map
+			for (var x = -1; x <= 1; x++)
+            {
+				for (var y = -1; y <= 1; y++)
+				{
+				  this.visibleSet.add( this.posAsString(
+				    AllUnits[i].mapX+x,
+					AllUnits[i].mapY+y ) )
+				}
+			}
+		}
+    }
 };
 Map.prototype.getUnitsAtPosition = function(xMapPos,yMapPos) {
   var UnitsAtPosition = [];
@@ -76,7 +101,8 @@ Map.prototype.drawUnitsAtRect = function(xMapPos,yMapPos) {
   {
 	  if(AllUnits[i].mapX == xMapPos &&
 	     AllUnits[i].mapY == yMapPos &&
-		 AllUnits[i].faction == this.showFaction)
+		 (AllUnits[i].faction == this.showFaction
+		 || this.visibleSet.has(this.posAsString(xMapPos,yMapPos) ) ) )
 	  {
 		  //UnitsAtPosition.push(AllUnits[i]);
 		  if(AllUnits[i] == selectedUnit)
@@ -91,7 +117,8 @@ Map.prototype.drawUnitsAtRect = function(xMapPos,yMapPos) {
   }
 }
 Map.prototype.drawText = function(xMapPos,yMapPos,textToShow,
-  isSelected) {
+  isSelected)
+ {
 	var text = document.createElementNS(this.ns, 'text')
 	text.setAttributeNS(null, 'x',xMapPos*10+5)
 	text.setAttributeNS(null, 'y',yMapPos*10+5)
