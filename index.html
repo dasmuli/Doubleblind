@@ -83,6 +83,26 @@
   
   
   <div class="container" id="EditView">
+    <form onsubmit="return false;">    
+	  <div class="row"  style="margin-top: 5%">
+        <div class="one-half column">
+          <label for="Faction0Name">Faction 1</label>
+          <input class="u-full-width" id="Faction0Name" value="Union" />
+        </div>
+        <div class="one-half column">
+          <label for="Faction1Name">Faction 2</label>
+          <input class="u-full-width" id="Faction1Name" value="Confederates" />
+        </div>
+	  </div>
+	  <div class="row">
+		<div class="one-half column">
+          <input class="button" type="submit" value="Change">
+        </div>
+		<div class="one-half column">
+          <input class="button" type="submit" value="Change">
+        </div>
+	  </div>
+	</form>
     <div class="row" id="UnitList">
       <div class="one-half column">
         <table class="u-full-width">
@@ -150,6 +170,16 @@
           <label for="NewUnitName">Unit name</label>
           <input class="u-full-width" id="NewUnitName">
         </div>
+	  </div>
+	  <div class="row">
+        <div class="one-half column">
+		  <label for="faction0">Union</label>
+	      <input type="radio" id="faction0" name="faction0Radio" value="faction0">
+		</div>
+        <div class="one-half column">
+		  <label for="faction1">Confederates</label>
+          <input type="radio" id="faction1" name="faction1Radio" value="faction1">
+	    </div>
 	  </div>
 	  <input class="button" type="submit" value="Add to position">
 	</form>

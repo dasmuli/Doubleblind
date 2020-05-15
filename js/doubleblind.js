@@ -2,12 +2,14 @@
 ///////////////////  Unit  /////////////
 var Offmap = -1
 var AllUnits = []
+var Faction = [ "Union", "Confederates" ]
 
-function Unit(name,description,mapX,mapY) {
+function Unit(name,description,mapX,mapY,faction) {
   this.name = name;
   this.mapX = mapX;
   this.mapY = mapY;
   this.description = description;
+  this.faction = faction;
   AllUnits.push( this )
   return this;
 }
@@ -26,7 +28,7 @@ Unit.prototype.IsInMovementRange = function(xMapPos,yMapPos) {
 }
 
 var selectedUnit = undefined  // better in UIControl?
-var testUnit = new Unit('Archer','Cmd 8',2,0)
+var testUnit = new Unit('Archer','Cmd 8',2,0,1)
 
 
 ///////////////////  Map  /////////////
@@ -214,7 +216,7 @@ var UIController = {
 	addUnitAtPosition: function(mapX,mapY)
 	{
 		map.selectPositionMode = false
-		new Unit(this.unitNameInput.value,'Add',mapX,mapY)
+		new Unit(this.unitNameInput.value,'Add',mapX,mapY,1)
 		map.draw()
 		this.showEdit()
 	},
