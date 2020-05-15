@@ -29,7 +29,7 @@ Unit.prototype.IsInMovementRange = function(xMapPos,yMapPos) {
 }
 
 var selectedUnit = undefined  // better in UIControl?
-var testUnit = new Unit('Archer','Cmd 8',2,0,1)
+var testUnit = new Unit('Archer','Cmd 8',5,3,1)
 var testUnit2 = new Unit('Iron Brigade','Cmd 7',5,5,0)
 
 
@@ -119,6 +119,7 @@ Map.prototype.drawUnitsAtRect = function(xMapPos,yMapPos) {
 	  if(AllUnits[i].mapX == xMapPos &&
 	     AllUnits[i].mapY == yMapPos &&
 		 (AllUnits[i].faction == this.showFaction
+		 || this.showFaction == AllFactions
 		 || this.visibleSet[this.showFaction].has(this.posAsString(xMapPos,yMapPos) ) ) )
 	  {
 		  //UnitsAtPosition.push(AllUnits[i]);
@@ -243,8 +244,10 @@ var UIController = {
 		this.editView.style.display = "none"
 		this.editWarning.style.display = "none"
 	},
-	showMap: function()
+	showMap: function(faction)
 	{
+		map.showFaction = faction
+		map.draw()
 		this.hideEverything()
 		this.mapView.style.display = "block"
 	},
@@ -268,7 +271,7 @@ var UIController = {
 	{
 		this.hideEverything()
 		map.selectPositionMode = true
-		this.showMap()
+		this.showMap(AllFactions)
 	},
 	addUnitAtPosition: function(mapX,mapY)
 	{
@@ -293,4 +296,4 @@ var UIController = {
 		this.unitListTable = new_tbody
 	},
 }
-UIController.showMap()
+UIController.showMap(1)

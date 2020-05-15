@@ -68,12 +68,21 @@
     <div class="row"  style="margin-top: 5%">
       <div class="one-half column">
         <h4>Main menu</h4>
-		<p>Hand over to the other side or edit the game.</p>
+		<p>Hand over to the other side.</p>
+		<p>Last move: Confederates</p>
 	  </div>
     </div>
 	<div class="row">
 	  <div class="one-half column">
-		<button onclick="UIController.showMap()">Map</button>
+		<button onclick="UIController.showMap(0)">Map view: Union</button>
+	  </div>
+	  <div class="one-half column">
+		<button onclick="UIController.showMap(1)">Map view: Confederates</button>
+	  </div>
+	</div>
+	<div class="row" style="margin-top: 7%">
+	  <div class="one-half column">
+	    <p>...or edit the game.</p>
 	  </div>
 	  <div class="one-half column">
 		<button onclick="UIController.showEditWarning()">Edit</button>
@@ -110,14 +119,6 @@
 			</tr>
 		  </thead>
 		  <tbody id="UnitListTable">
-			<tr>
-			  <td>Archer</td>
-			  <td>Strength 4</td>
-			</tr>
-			<tr>
-			  <td>Pettigrew</td>
-			  <td>Strength 4, Cmd 9</td>
-			</tr>
 		  </tbody>
 		</table>
 		
