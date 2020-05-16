@@ -88,7 +88,7 @@
   
   
   <div class="container" id="EditView">
-    <form onsubmit="return false;">    
+    <form onsubmit="UIController.setNewFactionNames(); return false;">    
 	  <div class="row"  style="margin-top: 5%">
         <div class="one-half column">
           <label for="Faction0Name">Faction 1</label>
@@ -110,7 +110,7 @@
         <table class="u-full-width">
 		  <thead>
 			<tr>
-			  <th>Union units</th>
+			  <th id="faction0Header">Union units</th>
 			  <th>Description</th>
 			</tr>
 		  </thead>
@@ -120,7 +120,7 @@
 		
 		<template id="UnitListTemplate">
 		  <tr>
-			  <td>Union units</td>
+			  <td>Unit name</td>
 			  <td>Description</td>
 		  </tr>
 		</template> 
@@ -130,7 +130,7 @@
         <table class="u-full-width">
 		  <thead>
 			<tr>
-			  <th>Confederates units</th>
+			  <th id="faction1Header">Confederates units</th>
 			  <th>Description</th>
 			</tr>
 		  </thead>

@@ -4,7 +4,7 @@ const Offboard = -3
 const AllFactions = -2
 const MAX_FACTION_STACKING = 2
 var AllUnits = []
-var Faction = [ "Union", "Confederates" ]
+var FactionName = [ "Unionn", "Confederatess" ]
 
 function Unit(name,description,mapX,mapY,faction) {
   this.name = name;
@@ -106,7 +106,7 @@ Map.prototype.posAsString = function(mapX,mapY) {
 Map.prototype.calculateVisibility = function() {
 	this.revealedPosition.clear()
 	// calculate for each faction independantly
-	for(var faction = 0; faction < Faction.length; faction++)
+	for(var faction = 0; faction < FactionName.length; faction++)
 	{
 		this.visibleSet[faction].clear()
 		for (var i = 0, li = AllUnits.length; i < li; i++)
@@ -422,6 +422,8 @@ var UIController = {
 	unitListTable1 : document.querySelector('#UnitListTableFaction1'),
 	unitNameInput : document.querySelector('#UnitName'),
 	unitDecriptionInput : document.querySelector('#UnitDescription'),
+	faction0NameInput : document.querySelector('#Faction0Name'),
+	faction1NameInput : document.querySelector('#Faction1Name'),
 	firstStart : true,
 	currentEditedUnit : 0,
 	selectedMapY : 0,
@@ -504,6 +506,25 @@ var UIController = {
 			new_tbody.appendChild(clone)
         }
         return new_tbody
+	},
+	setNewFactionNames: function()
+	{
+		FactionName[0] = this.faction0NameInput.value
+		FactionName[1] = this.faction1NameInput.value
+		this.updateFactionNames()
+	},
+	updateFactionNames: function()
+	{
+		// set in edit menu
+		this.faction0NameInput.value = FactionName[0]
+		this.faction1NameInput.value = FactionName[1]
+		// set in edit view unit list
+		document.getElementById("faction0Header").innerHTML 
+		  = FactionName[0]
+		document.getElementById("faction1Header").innerHTML 
+		  = FactionName[1]
+		// set in edit view faction seletion for a unit
+		// set in main menu
 	},
 	updateUnitList: function()
 	{
