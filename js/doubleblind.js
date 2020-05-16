@@ -126,24 +126,42 @@ Map.prototype.getUnitsAtPosition = function(xMapPos,yMapPos) {
   return UnitsAtPosition;
 }
 Map.prototype.drawUnitsAtRect = function(xMapPos,yMapPos) {
-  //var UnitsAtPosition = [];
+  const STACKING_STEP = 2
+  // this is used to stack friendly units upwards
+  var yOffsetFriendly = 0 
+  // this is used to stack enemy units downwards
+  var yOffsetEnemy = 0   
   for (var i = 0, li = AllUnits.length; i < li; i++)
   {
+	  var isFriendly = (AllUnits[i].faction == this.showFaction)
 	  if(AllUnits[i].mapX == xMapPos &&
 	     AllUnits[i].mapY == yMapPos &&
-		 (AllUnits[i].faction == this.showFaction
+		 // allways show all friendly units
+		 ( isFriendly
+		 // or show when all units are to be shown
 		 || this.showFaction == AllFactions
-		 || this.visibleSet[this.showFaction].has(this.posAsString(xMapPos,yMapPos) ) ) )
+		 // or show unit when the position is in the visibleSet
+		 || this.visibleSet[this.showFaction].has(
+		      this.posAsString(xMapPos,yMapPos) ) ) )
 	  {
-		  //UnitsAtPosition.push(AllUnits[i]);
-		  if(AllUnits[i] == selectedUnit)
+		  var yOffset
+		  if(isFriendly)
 		  {
-			this.drawText(xMapPos,yMapPos,AllUnits[i].name,true,0,0);
+			  yOffset = yOffsetFriendly
+			  yOffsetFriendly -= STACKING_STEP
+			  if(yOffsetEnemy == 0) // first unit shown centered
+				  yOffsetEnemy = STACKING_STEP
 		  }
 		  else
 		  {
-		    this.drawText(xMapPos,yMapPos,AllUnits[i].name,false,0,0);
+			  yOffset = yOffsetEnemy
+			  yOffsetEnemy += STACKING_STEP
+			  if(yOffsetFriendly == 0)  // first unit shown centered
+				  yOffsetFriendly = -STACKING_STEP
 		  }
+		  this.drawText(xMapPos,yMapPos,AllUnits[i].name,
+			  (AllUnits[i] == selectedUnit) // selected units bold
+			  ,0,yOffset);
 	  }
   }
 }
