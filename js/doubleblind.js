@@ -16,6 +16,10 @@ function Unit(name,description,mapX,mapY,faction) {
   return this;
 }
 
+Unit.prototype.IsAtPosition = function(xMapPos,yMapPos) {
+  return (this.mapX == xMapPos && this.mapY == yMapPos)
+}
+
 Unit.prototype.MoveTo = function(xMapPos,yMapPos) {
   if(this.hasMoved == false)
   {
@@ -133,12 +137,15 @@ Map.prototype.calculateVisibility = function() {
 		}
 	}
 };
-Map.prototype.getUnitsAtPosition = function(xMapPos,yMapPos) {
+Map.prototype.getUnitsAtPosition = function(xMapPos,yMapPos,faction) {
   var UnitsAtPosition = [];
   for (var i = 0, li = AllUnits.length; i < li; i++)
   {
 	  if(AllUnits[i].mapX == xMapPos &&
-	     AllUnits[i].mapY == yMapPos)
+	     AllUnits[i].mapY == yMapPos &&
+		 !AllUnits[i].hasMoved &&
+		 (AllUnits[i].faction == faction ||
+          faction == AllFactions ) )
 	  {
 		  UnitsAtPosition.push(AllUnits[i]);
 	  }
@@ -242,7 +249,9 @@ Map.prototype.PositionClicked = function(xMapPos,yMapPos) {
 	  UIController.addUnitAtPosition(xMapPos,yMapPos)
 	  return;
   }
-  if(selectedUnit != undefined) // move a unit that was selected
+  if(selectedUnit != undefined &&
+     !selectedUnit.IsAtPosition(xMapPos,yMapPos)) 
+	 // move a unit that was selected
   {
 	 if(selectedUnit.IsInMovementRange(xMapPos,yMapPos))
 	 {
@@ -250,15 +259,34 @@ Map.prototype.PositionClicked = function(xMapPos,yMapPos) {
 	 }
     selectedUnit = undefined	
   }
-  else // remove selection and select unit on this position
+  else // select unit on this position or remove selection
   {
-	  selectedUnit = undefined
-	  var units = this.getUnitsAtPosition(xMapPos,yMapPos);
+	  var units = this.getUnitsAtPosition(
+	    xMapPos,yMapPos,this.showFaction);
+	  // get selected unit index for faction
+	  var selectedIndex = -1
 	  for (var i = 0, li = units.length; i < li; i++)
 	  {
-		  if(units[i].faction == this.showFaction
-		    && (units[i].hasMoved == false) )
-		    selectedUnit = units[i]
+		  if(units[i] == selectedUnit )
+		  {
+		    selectedIndex = i
+		    break;
+		  }
+	  }
+	  if(i != -1)
+	  {
+		  // if legal, increase by one, then mod length
+		  // that is: select next unit here
+		  i++
+		  i %= units.length
+		  selectedUnit = units[i]
+	  }
+	  else
+	  {
+		  if(units.length > 0)
+		    selectedUnit = units[0]  // initial select
+		  else
+		    selectedUnit = undefined // deselect
 	  }
   }
   this.draw()
@@ -319,6 +347,7 @@ Map.prototype.drawRect = function(xMapPos,yMapPos) {
 	rect.setAttributeNS(null, 'width', CELL_WIDTH-2)
 	rect.setAttributeNS(null, 'height',CELL_WIDTH-2)
 	if(selectedUnit && 
+	  !selectedUnit.IsAtPosition(xMapPos,yMapPos) &&
 	  ((Math.abs(xMapPos-selectedUnit.mapX) <= 1
 	  && Math.abs(yMapPos-selectedUnit.mapY) <= 1)
 	  || selectedUnit.IsOffboard() ) )
@@ -347,6 +376,7 @@ map.draw()
 var GameEngine = {
 	prepareRound:function(faction)
 	{
+		selectedUnit = undefined
 	  for (var i = 0, li = AllUnits.length; i < li; i++)
 	  {
 		  if(AllUnits[i].faction != faction)
