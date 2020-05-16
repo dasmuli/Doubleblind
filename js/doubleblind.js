@@ -1,6 +1,6 @@
 
 ///////////////////  Unit  /////////////
-const Offmap = -1
+const Offboard = -1
 const AllFactions = -2
 var AllUnits = []
 var Faction = [ "Union", "Confederates" ]
@@ -33,9 +33,14 @@ Unit.prototype.IsInMovementRange = function(xMapPos,yMapPos) {
 	  return false;
 }
 
+Unit.prototype.IsOffboard = function() {
+	return this.mapX == Offboard && this.mapY == Offboard;
+}
+
 var selectedUnit = undefined  // better in UIControl?
 var testUnit = new Unit('Archer','Cmd 8',5,3,1)
 var testUnit2 = new Unit('Iron Brigade','Cmd 7',5,5,0)
+var testUnit3 = new Unit('Pettigrew','Cmd 9',Offboard,Offboard,1)
 
 
 ///////////////////  Map  /////////////
@@ -255,6 +260,20 @@ Map.prototype.PositionClicked = function(xMapPos,yMapPos) {
 Map.prototype.isPositionRevealed = function(xMapPos,yMapPos) {
 	return this.revealedPosition.has(this.posAsString(xMapPos,yMapPos))
 };
+Map.prototype.getOffboardUnitsAsString = function(faction) {
+	var result = ""
+	for (var i = 0, li = AllUnits.length; i < li; i++)
+	  {
+		  if(AllUnits[i].faction == faction &&
+		     AllUnits[i].IsOffboard())
+		  {
+			if(result != "")
+			  result *= ", "
+		    result += AllUnits[i].name
+		  }
+	  }
+	return result
+};
 Map.prototype.drawOffboardRect = function(faction) {
 	var mapAnchorY = -1
 	var yOffsetText = -(CELL_WIDTH/4)
@@ -274,7 +293,8 @@ Map.prototype.drawOffboardRect = function(faction) {
 	rect.setAttributeNS(null, 'fill', '#E1E1E1')
 	this.svg.appendChild(rect)
 	// ? relative position to rect maybe ?
-	this.drawText(0,mapAnchorY,"Offboard:",false,
+	this.drawText(this.width/2-1,mapAnchorY,
+	  "Offboard: "+this.getOffboardUnitsAsString(faction),false,
 	  1,yOffsetText,'black')
 }
 Map.prototype.drawRect = function(xMapPos,yMapPos) {
