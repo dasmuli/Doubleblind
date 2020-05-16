@@ -274,7 +274,7 @@ Map.prototype.getOffboardUnitsAsString = function(faction) {
 		     AllUnits[i].IsOffboard())
 		  {
 			if(result != "")
-			  result *= ", "
+			  result += ", "
 		    if(AllUnits[i] == selectedUnit)
 			  result += "\u21D2"
 		    result += AllUnits[i].name
