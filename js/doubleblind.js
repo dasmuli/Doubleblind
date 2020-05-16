@@ -55,6 +55,7 @@ Map.prototype.draw = function() {
     this.svg.removeChild(this.svg.lastChild);
   }
   this.calculateVisibility()
+  // draw each position: tile + units as text
   for (var y = 0, ly = this.height; y < ly; y++)
   {
 	  for (var x = 0, lx = this.width; x < lx; x++)
@@ -62,7 +63,7 @@ Map.prototype.draw = function() {
 		this.drawRect(x,y);
 	  }
   }
-  // draw sector positions
+  // draw sector coordinates at border
   for (var y = 0, ly = this.height; y < ly; y++)
   {
 	  this.drawSectorPosition(-1,y,y+1,CELL_WIDTH/2-1,0);
@@ -228,7 +229,8 @@ Map.prototype.PositionClicked = function(xMapPos,yMapPos) {
 	  var units = this.getUnitsAtPosition(xMapPos,yMapPos);
 	  for (var i = 0, li = units.length; i < li; i++)
 	  {
-		  selectedUnit = units[i]
+		  if(units[i].faction == this.showFaction)
+		    selectedUnit = units[i]
 	  }
   }
   this.draw()
