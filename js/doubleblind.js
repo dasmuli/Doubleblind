@@ -2,6 +2,7 @@
 ///////////////////  Unit  /////////////
 const Offboard = -3
 const AllFactions = -2
+const MAX_FACTION_STACKING = 2
 var AllUnits = []
 var Faction = [ "Union", "Confederates" ]
 
@@ -47,6 +48,7 @@ Unit.prototype.IsOffboard = function() {
 
 var selectedUnit = undefined  // better in UIControl?
 var testUnit = new Unit('Archer','Cmd 8',5,3,1)
+var testUnit = new Unit('Gardner','Cmd 8',6,3,1)
 var testUnit2 = new Unit('Iron Brigade','Cmd 7',5,5,0)
 var testUnit3 = new Unit('Pettigrew','Cmd 9',Offboard,Offboard,1)
 
@@ -88,13 +90,13 @@ Map.prototype.draw = function() {
   // draw sector coordinates at border
   for (var y = 0, ly = this.height; y < ly; y++)
   {
-	  this.drawSectorPosition(-1,y,y+1,CELL_WIDTH/2-1,0);
-	  this.drawSectorPosition(this.width,y,y+1,-(CELL_WIDTH/2-1),0);
+	  this.drawSectorOrdinate(-1,y,y+1,CELL_WIDTH/2-1,0);
+	  this.drawSectorOrdinate(this.width,y,y+1,-(CELL_WIDTH/2-1),0);
   }
   for (var x = 0, lx = this.width; x < lx; x++)
   {
-	  this.drawSectorPosition(x,-1,x+1,0,(CELL_WIDTH/2-1));
-	  this.drawSectorPosition(x,this.height,x+1,0,-(CELL_WIDTH/2-1));
+	  this.drawSectorOrdinate(x,-1,x+1,0,(CELL_WIDTH/2-1));
+	  this.drawSectorOrdinate(x,this.height,x+1,0,-(CELL_WIDTH/2-1));
   }
   this.drawOffboardRect(this.showFaction)
 };
@@ -202,7 +204,7 @@ Map.prototype.drawUnitsAtRect = function(xMapPos,yMapPos) {
 	  }
   }
 }
-Map.prototype.drawSectorPosition = function(xMapPos,yMapPos
+Map.prototype.drawSectorOrdinate = function(xMapPos,yMapPos
   ,textToShow,xOffset,yOffset)
 {
 	this.drawText(xMapPos,yMapPos,textToShow,false
@@ -253,7 +255,9 @@ Map.prototype.PositionClicked = function(xMapPos,yMapPos) {
      !selectedUnit.IsAtPosition(xMapPos,yMapPos)) 
 	 // move a unit that was selected
   {
-	 if(selectedUnit.IsInMovementRange(xMapPos,yMapPos))
+	 if(selectedUnit.IsInMovementRange(xMapPos,yMapPos)
+		 && this.countUnitsAt(xMapPos,yMapPos,this.showFaction)
+	        < MAX_FACTION_STACKING )
 	 {
 		 selectedUnit.MoveTo(xMapPos,yMapPos)
 	 }
@@ -348,6 +352,8 @@ Map.prototype.drawRect = function(xMapPos,yMapPos) {
 	rect.setAttributeNS(null, 'height',CELL_WIDTH-2)
 	if(selectedUnit && 
 	  !selectedUnit.IsAtPosition(xMapPos,yMapPos) &&
+	  this.countUnitsAt(xMapPos,yMapPos,this.showFaction)
+	        < MAX_FACTION_STACKING &&
 	  ((Math.abs(xMapPos-selectedUnit.mapX) <= 1
 	  && Math.abs(yMapPos-selectedUnit.mapY) <= 1)
 	  || selectedUnit.IsOffboard() ) )
@@ -365,6 +371,16 @@ Map.prototype.drawRect = function(xMapPos,yMapPos) {
 	this.svg.appendChild(rect)
 	
 	this.drawUnitsAtRect(xMapPos,yMapPos)
+};
+Map.prototype.countUnitsAt = function(xMapPos,yMapPos,faction) {
+	var result = 0
+	for (var i = 0, li = AllUnits.length; i < li; i++)
+	{
+	  if(AllUnits[i].faction == faction &&
+	    AllUnits[i].IsAtPosition(xMapPos,yMapPos))
+		result++
+    }
+	return result
 };
 
 var map = new Map(12,8)
