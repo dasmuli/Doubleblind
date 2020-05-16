@@ -190,7 +190,11 @@ Map.prototype.drawUnitsAtRect = function(xMapPos,yMapPos) {
 		  }
 		  else
 		  {
-			  color = '#F00' // enemies are red
+			  if(this.showFaction == AllFactions &&
+			    AllUnits[i].faction == 0)
+				color = '#000' // still black in all faction mode
+			  else
+			    color = '#F00' // enemies are red
 			  yOffset = yOffsetEnemy
 			  yOffsetEnemy += STACKING_STEP
 			  if(yOffsetFriendly == 0)  // first unit shown centered
