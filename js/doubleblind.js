@@ -83,6 +83,7 @@ Map.prototype.draw = function() {
 	  this.drawSectorPosition(x,-1,x+1,0,(CELL_WIDTH/2-1));
 	  this.drawSectorPosition(x,this.height,x+1,0,-(CELL_WIDTH/2-1));
   }
+  this.drawOffboardRect()
 };
 Map.prototype.posAsString = function(mapX,mapY) {
 	return mapX+","+mapY
@@ -254,6 +255,16 @@ Map.prototype.PositionClicked = function(xMapPos,yMapPos) {
 Map.prototype.isPositionRevealed = function(xMapPos,yMapPos) {
 	return this.revealedPosition.has(this.posAsString(xMapPos,yMapPos))
 };
+Map.prototype.drawOffboardRect = function() {
+	var rect = document.createElementNS(this.ns, 'rect')
+	rect.setAttributeNS(null, 'x',this.getMapUpperLeftX(0)+1)
+	rect.setAttributeNS(null, 'y',this.getMapUpperLeftY(-1))
+	rect.setAttributeNS(null, 'width', (this.width*CELL_WIDTH)-2)
+	rect.setAttributeNS(null, 'height',(CELL_WIDTH/2))
+	rect.setAttributeNS(null, 'fill', '#E1E1E1')
+	this.svg.appendChild(rect)
+	this.drawText(0,-1,"Offboard:",false,1,-(CELL_WIDTH/4),'black')
+}
 Map.prototype.drawRect = function(xMapPos,yMapPos) {
 	var rect = document.createElementNS(this.ns, 'rect')
 	rect.setAttributeNS(null, 'x',this.getMapUpperLeftX(xMapPos)+1)
