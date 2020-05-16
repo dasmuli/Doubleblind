@@ -248,7 +248,7 @@ Map.prototype.drawText = function(xMapPos,yMapPos,textToShow,
 Map.prototype.PositionClicked = function(xMapPos,yMapPos) {
   if(this.selectPositionMode) // used to place units in edit mode
   {
-	  UIController.addUnitAtPosition(xMapPos,yMapPos)
+	  UIController.positionWasSelected(xMapPos,yMapPos)
 	  return;
   }
   if(selectedUnit != undefined &&
@@ -419,6 +419,8 @@ var UIController = {
 	unitDecriptionInput : document.querySelector('#UnitDescription'),
 	firstStart : true,
 	currentEditedUnit : 0,
+	selectedMapY : 0,
+	selectedMapY : 0,
 	showMainMenu:function()
 	{
 		this.hideEverything()
@@ -457,18 +459,20 @@ var UIController = {
 		this.hideEverything()
 		this.editWarning.style.display = "block"
 	},
-	addUnit: function()
+	selectPosition: function()
 	{
 		this.hideEverything()
 		map.selectPositionMode = true
 		this.showMap(AllFactions)
 	},
-	addUnitAtPosition: function(mapX,mapY)
+	positionWasSelected: function(mapX,mapY)
 	{
 		map.selectPositionMode = false
-		new Unit(this.unitNameInput.value,'Add',mapX,mapY,1)
+		//new Unit(this.unitNameInput.value,'Add',mapX,mapY,1)
 		map.draw()
 		this.showEdit()
+		this.selectedMapX = mapX
+		this.selectedMapY = mapY
 	},
 	updateFactionUnitList: function(faction)
 	{
@@ -503,6 +507,30 @@ var UIController = {
 		  this.currentEditedUnit = 0
         this.showUnitEdited()	  
 	},
+	updateUnitEdited: function()
+	{
+		if(this.currentEditedUnit >= 0 &&
+		   this.currentEditedUnit < AllUnits.length)
+		{
+		    AllUnits[this.currentEditedUnit].name
+			  = this.unitNameInput.value
+		    AllUnits[this.currentEditedUnit].description
+			  = this.unitDecriptionInput.value
+		  if(document.getElementById("faction0").checked)
+		  {
+		    AllUnits[this.currentEditedUnit].faction = 0
+		  }
+		  else
+		  {
+			AllUnits[this.currentEditedUnit].faction = 1
+		  }
+		  AllUnits[this.currentEditedUnit].mapX
+		    = this.selectedMapX
+		  AllUnits[this.currentEditedUnit].mapY
+		    = this.selectedMapY
+		  this.updateUnitList()
+		}
+	},
 	showUnitEdited: function()
 	{
 		if(this.currentEditedUnit >= 0 &&
@@ -520,6 +548,8 @@ var UIController = {
 		  {
 			document.getElementById("faction1").checked = true;
 		  }
+		  this.selectedMapX = AllUnits[this.currentEditedUnit].mapX
+		  this.selectedMapY = AllUnits[this.currentEditedUnit].mapY
 		}
 	},
 }
