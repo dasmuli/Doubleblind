@@ -110,7 +110,7 @@
         <table class="u-full-width">
 		  <thead>
 			<tr>
-			  <th>Unit</th>
+			  <th>Union units</th>
 			  <th>Description</th>
 			</tr>
 		  </thead>
@@ -139,14 +139,50 @@
 		</table>
       </div>
     </div>
-    <div class="row">
+	<form onsubmit="UIController.addUnit();return false;">    
+	  <div class="row">
+        <div class="one-half column">
+          <label for="UnitName">Unit name</label>
+          <input class="u-full-width" id="UnitName">
+        </div>
+	    <div class="one-half column">
+          <label for="UnitName">Unit description</label>
+          <input class="u-full-width" id="UnitDescription">
+        </div>
+      </div>
+	  <div class="row">
+        <div class="one-half column">
+		  <label for="faction0">Union</label>
+	      <input type="radio" id="faction0" name="factionRadio" value="faction">
+		</div>
+        <div class="one-half column">
+		  <label for="faction1">Confederates</label>
+          <input type="radio" id="faction1" name="factionRadio" value="faction">
+	    </div>
+	  </div>
+	  <div class="row">
+		  <div   class="three columns">
+			<button onclick="">Next unit</button>
+		  </div>
+		  <div   class="three columns">
+			<button onclick="">Set position</button>
+		  </div>
+          <div class="three columns">
+            <button onclick="">Update unit</button>
+          </div>
+	      <div   class="three columns">
+            <button onclick="">Add as new</button>
+          </div>
+	  </div>
+	<div class="row">
       <div   class="one-half column">
-        <button onclick="UIController.showAddUnit()">New</button>
+        <button onclick="">Delete unit</button>
       </div>
 	  <div   class="one-half column">
         <button onclick="UIController.showMainMenu()">Main menu</button>
       </div>
 	</div>
+	</form>
   </div>
   
   
