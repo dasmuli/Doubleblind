@@ -524,6 +524,10 @@ var UIController = {
 		document.getElementById("faction1Header").innerHTML 
 		  = FactionName[1]
 		// set in edit view faction seletion for a unit
+		document.getElementById("faction0Radio").innerHTML 
+		  = FactionName[0]
+		document.getElementById("faction1Radio").innerHTML 
+		  = FactionName[1]
 		// set in main menu
 	},
 	updateUnitList: function()
