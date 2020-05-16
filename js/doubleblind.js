@@ -26,6 +26,8 @@ Unit.prototype.MoveTo = function(xMapPos,yMapPos) {
 }
 
 Unit.prototype.IsInMovementRange = function(xMapPos,yMapPos) {
+	if(this.IsOffboard())
+		return true
 	if(Math.abs(xMapPos-this.mapX) <= 1
 	  && Math.abs(yMapPos-this.mapY) <= 1)
 	  return true;
@@ -183,6 +185,8 @@ Map.prototype.drawUnitsAtRect = function(xMapPos,yMapPos) {
 			  if(yOffsetFriendly == 0)  // first unit shown centered
 				  yOffsetFriendly = -STACKING_STEP
 		  }
+		  if(AllUnits[i] == selectedUnit)
+	        textToShow = "\u21D2"+textToShow+"\u21D0"
 		  this.drawText(xMapPos,yMapPos,textToShow,
 			  (AllUnits[i] == selectedUnit) // selected units are bold
 			  ,0,yOffset,color);
