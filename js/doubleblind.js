@@ -192,7 +192,7 @@ Map.prototype.drawUnitsAtRect = function(xMapPos,yMapPos) {
 		  {
 			  if(this.showFaction == AllFactions &&
 			    AllUnits[i].faction == 0)
-				color = '#000' // still black in all faction mode
+				color = '#00F' // blue in all faction mode
 			  else
 			    color = '#F00' // enemies are red
 			  yOffset = yOffsetEnemy
