@@ -468,7 +468,6 @@ var UIController = {
 	positionWasSelected: function(mapX,mapY)
 	{
 		map.selectPositionMode = false
-		//new Unit(this.unitNameInput.value,'Add',mapX,mapY,1)
 		map.draw()
 		this.showEdit()
 		this.selectedMapX = mapX
@@ -506,6 +505,22 @@ var UIController = {
 		if(this.currentEditedUnit >= AllUnits.length)
 		  this.currentEditedUnit = 0
         this.showUnitEdited()	  
+	},
+	addUnitEditedAsNew: function()
+	{
+	    var faction = 0
+		if(!document.getElementById("faction0").checked)
+		{
+		  faction = 1
+		}
+		new Unit(this.unitNameInput.value,
+		  this.unitDecriptionInput.value,
+		  this.selectedMapX,
+		  this.selectedMapY,
+		  faction)
+		this.updateUnitList()
+	    // the added values represent the last unit of the list now
+		this.currentEditedUnit = AllUnits.length - 1
 	},
 	updateUnitEdited: function()
 	{
