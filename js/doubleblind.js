@@ -1,6 +1,6 @@
 
 ///////////////////  Unit  /////////////
-const Offboard = -1
+const Offboard = -3
 const AllFactions = -2
 var AllUnits = []
 var Faction = [ "Union", "Confederates" ]
@@ -269,7 +269,11 @@ Map.prototype.getOffboardUnitsAsString = function(faction) {
 		  {
 			if(result != "")
 			  result *= ", "
+		    if(AllUnits[i] == selectedUnit)
+			  result += "\u21D2"
 		    result += AllUnits[i].name
+			if(AllUnits[i] == selectedUnit)
+			  result += "\u21D0"
 		  }
 	  }
 	return result
@@ -291,6 +295,8 @@ Map.prototype.drawOffboardRect = function(faction) {
 	rect.setAttributeNS(null, 'width', (this.width*CELL_WIDTH)-2)
 	rect.setAttributeNS(null, 'height',(CELL_WIDTH/2))
 	rect.setAttributeNS(null, 'fill', '#E1E1E1')
+	rect.setAttributeNS(null, 'onclick', "map.PositionClicked("
+	  +Offboard+","+Offboard+")")
 	this.svg.appendChild(rect)
 	// ? relative position to rect maybe ?
 	this.drawText(this.width/2-1,mapAnchorY,
