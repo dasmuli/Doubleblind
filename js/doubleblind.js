@@ -28,6 +28,8 @@ Unit.prototype.MoveTo = function(xMapPos,yMapPos) {
 Unit.prototype.IsInMovementRange = function(xMapPos,yMapPos) {
 	if(this.IsOffboard())
 		return true
+	if(xMapPos == Offboard && yMapPos == Offboard)
+		return true
 	if(Math.abs(xMapPos-this.mapX) <= 1
 	  && Math.abs(yMapPos-this.mapY) <= 1)
 	  return true;
@@ -298,7 +300,10 @@ Map.prototype.drawOffboardRect = function(faction) {
 	  + yOffsetRect)
 	rect.setAttributeNS(null, 'width', (this.width*CELL_WIDTH)-2)
 	rect.setAttributeNS(null, 'height',(CELL_WIDTH/2))
-	rect.setAttributeNS(null, 'fill', '#E1E1E1')
+	if(selectedUnit == undefined || selectedUnit.IsOffboard())
+	  rect.setAttributeNS(null, 'fill', '#E1E1E1')
+    else
+	  rect.setAttributeNS(null, 'fill', '#A1A1A1')
 	rect.setAttributeNS(null, 'onclick', "map.PositionClicked("
 	  +Offboard+","+Offboard+")")
 	this.svg.appendChild(rect)
@@ -313,8 +318,10 @@ Map.prototype.drawRect = function(xMapPos,yMapPos) {
 	rect.setAttributeNS(null, 'y',this.getMapUpperLeftY(yMapPos)+1)
 	rect.setAttributeNS(null, 'width', CELL_WIDTH-2)
 	rect.setAttributeNS(null, 'height',CELL_WIDTH-2)
-	if(selectedUnit && Math.abs(xMapPos-selectedUnit.mapX) <= 1
+	if(selectedUnit && 
+	  ((Math.abs(xMapPos-selectedUnit.mapX) <= 1
 	  && Math.abs(yMapPos-selectedUnit.mapY) <= 1)
+	  || selectedUnit.IsOffboard() ) )
 	  rect.setAttributeNS(null, 'fill', '#A1A1A1')
 	else if(this.isPositionRevealed(xMapPos,yMapPos))
 	{
