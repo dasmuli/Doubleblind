@@ -11,13 +11,18 @@ function Unit(name,description,mapX,mapY,faction) {
   this.mapY = mapY;
   this.description = description;
   this.faction = faction;
+  this.hasMoved = false;
   AllUnits.push( this )
   return this;
 }
 
 Unit.prototype.MoveTo = function(xMapPos,yMapPos) {
-  this.mapX = xMapPos;
-  this.mapY = yMapPos;
+  if(this.hasMoved == false)
+  {
+	  this.mapX = xMapPos;
+	  this.mapY = yMapPos;
+	  this.hasMoved = true;
+  }
 }
 
 Unit.prototype.IsInMovementRange = function(xMapPos,yMapPos) {
@@ -34,8 +39,8 @@ var testUnit2 = new Unit('Iron Brigade','Cmd 7',5,5,0)
 
 
 ///////////////////  Map  /////////////
-// Does NOT have x/y positions - unit values
-// are important. The Map is rerendered every select/move.
+// Does NOT have x/y positions - unit position values
+// are important. The Map is rerendered every selection/move.
 
 const CELL_WIDTH = 10
 
@@ -45,12 +50,16 @@ function Map(width,height) {
   this.height = height
   this.svg = document.getElementById('SVGMap')
   this.ns = 'http://www.w3.org/2000/svg'
+  // used to place new units in edit mode
   this.selectPositionMode = false
+  // each faction has its own visibility
   this.visibleSet = [ new Set(), new Set()]
+  // visible positions to both => put on table
   this.revealedPosition = new Set()
   return this;
 }
 Map.prototype.draw = function() {
+  // delete old map
   while (this.svg.lastChild) {
     this.svg.removeChild(this.svg.lastChild);
   }
@@ -80,7 +89,7 @@ Map.prototype.posAsString = function(mapX,mapY) {
 };
 Map.prototype.calculateVisibility = function() {
 	this.revealedPosition.clear()
-	// calculate for all factions
+	// calculate for each faction independantly
 	for(var faction = 0; faction < Faction.length; faction++)
 	{
 		this.visibleSet[faction].clear()
@@ -145,10 +154,16 @@ Map.prototype.drawUnitsAtRect = function(xMapPos,yMapPos) {
 		 || this.visibleSet[this.showFaction].has(
 		      this.posAsString(xMapPos,yMapPos) ) ) )
 	  {
-		  var yOffset
+		  var textToShow = AllUnits[i].name
+		  var yOffsets
 		  var color = '#000'
 		  if(isFriendly)
 		  {
+			  if(AllUnits[i].hasMoved)
+			  {
+				  textToShow = "\u21E3"+textToShow+"\u21E3" 
+				  // alt: "\u21D3"
+			  }
 			  yOffset = yOffsetFriendly
 			  yOffsetFriendly -= STACKING_STEP
 			  if(yOffsetEnemy == 0) // first unit shown centered
@@ -156,14 +171,14 @@ Map.prototype.drawUnitsAtRect = function(xMapPos,yMapPos) {
 		  }
 		  else
 		  {
-			  color = '#F00'
+			  color = '#F00' // enemies are red
 			  yOffset = yOffsetEnemy
 			  yOffsetEnemy += STACKING_STEP
 			  if(yOffsetFriendly == 0)  // first unit shown centered
 				  yOffsetFriendly = -STACKING_STEP
 		  }
-		  this.drawText(xMapPos,yMapPos,AllUnits[i].name,
-			  (AllUnits[i] == selectedUnit) // selected units bold
+		  this.drawText(xMapPos,yMapPos,textToShow,
+			  (AllUnits[i] == selectedUnit) // selected units are bold
 			  ,0,yOffset,color);
 	  }
   }
@@ -210,7 +225,7 @@ Map.prototype.drawText = function(xMapPos,yMapPos,textToShow,
 	this.svg.appendChild(text)
 };
 Map.prototype.PositionClicked = function(xMapPos,yMapPos) {
-  if(this.selectPositionMode)
+  if(this.selectPositionMode) // used to place units in edit mode
   {
 	  UIController.addUnitAtPosition(xMapPos,yMapPos)
 	  return;
@@ -229,7 +244,8 @@ Map.prototype.PositionClicked = function(xMapPos,yMapPos) {
 	  var units = this.getUnitsAtPosition(xMapPos,yMapPos);
 	  for (var i = 0, li = units.length; i < li; i++)
 	  {
-		  if(units[i].faction == this.showFaction)
+		  if(units[i].faction == this.showFaction
+		    && (units[i].hasMoved == false) )
 		    selectedUnit = units[i]
 	  }
   }
@@ -267,6 +283,21 @@ map.draw()
 
 
 
+///////////////////  GameEngine  /////////////
+var GameEngine = {
+	prepareRound:function(faction)
+	{
+	  for (var i = 0, li = AllUnits.length; i < li; i++)
+	  {
+		  if(AllUnits[i].faction == faction)
+		  {
+			  AllUnits[i].hasMoved = false
+		  }
+	  }
+	},
+}
+
+
 
 ///////////////////  UI Controller  /////////////
 var UIController = {
@@ -302,6 +333,7 @@ var UIController = {
 	showMap: function(faction)
 	{
 		map.showFaction = faction
+		GameEngine.prepareRound(faction)
 		map.draw()
 		this.hideEverything()
 		this.mapView.style.display = "block"
