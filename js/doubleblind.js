@@ -289,7 +289,7 @@ var GameEngine = {
 	{
 	  for (var i = 0, li = AllUnits.length; i < li; i++)
 	  {
-		  if(AllUnits[i].faction == faction)
+		  if(AllUnits[i].faction != faction)
 		  {
 			  AllUnits[i].hasMoved = false
 		  }
