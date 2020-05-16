@@ -66,7 +66,7 @@ function Map(width,height) {
   this.svg = document.getElementById('SVGMap')
   this.ns = 'http://www.w3.org/2000/svg'
   // used to place new units in edit mode
-  this.selectPositionMode = false
+  this.selectPositionMode
   // each faction has its own visibility
   this.visibleSet = [ new Set(), new Set()]
   // visible positions to both => put on table
@@ -248,7 +248,8 @@ Map.prototype.drawText = function(xMapPos,yMapPos,textToShow,
 Map.prototype.PositionClicked = function(xMapPos,yMapPos) {
   if(this.selectPositionMode) // used to place units in edit mode
   {
-	  UIController.positionWasSelected(xMapPos,yMapPos)
+	  this.selectPositionMode(xMapPos,yMapPos)
+	  this.selectPositionMode = undefined
 	  return;
   }
   if(selectedUnit != undefined &&
@@ -462,16 +463,28 @@ var UIController = {
 	selectPosition: function()
 	{
 		this.hideEverything()
-		map.selectPositionMode = true
+		map.selectPositionMode = (x,y) => UIController.positionWasSelected(x,y)
 		this.showMap(AllFactions)
 	},
 	positionWasSelected: function(mapX,mapY)
 	{
-		map.selectPositionMode = false
+		map.selectPositionMode = undefined
 		map.draw()
 		this.showEdit()
 		this.selectedMapX = mapX
 		this.selectedMapY = mapY
+	},
+	showAllMap: function()
+	{
+		this.hideEverything()
+		map.selectPositionMode = (x,y) => UIController.mapWasShown(x,y)
+		this.showMap(AllFactions)
+	},
+	mapWasShown: function(mapX,mapY)
+	{
+		map.selectPositionMode = undefined
+		map.draw()
+		this.showEdit()
 	},
 	updateFactionUnitList: function(faction)
 	{
