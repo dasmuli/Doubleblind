@@ -522,6 +522,19 @@ var UIController = {
 	    // the added values represent the last unit of the list now
 		this.currentEditedUnit = AllUnits.length - 1
 	},
+	deleteUnitEdited: function()
+	{
+		if(this.currentEditedUnit >= 0 &&
+		   this.currentEditedUnit < AllUnits.length)
+		{
+	      AllUnits.splice(this.currentEditedUnit, 1)
+		  this.currentEditedUnit--
+		  if(this.currentEditedUnit < 0)
+		    this.currentEditedUnit = 0
+		  this.updateUnitList()
+		  this.showUnitEdited()
+		}
+	},
 	updateUnitEdited: function()
 	{
 		if(this.currentEditedUnit >= 0 &&
