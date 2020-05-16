@@ -138,8 +138,7 @@
 		  </tbody>
 		</table>
       </div>
-    </div>
-	<form onsubmit="UIController.addUnit();return false;">    
+    </div> 
 	  <div class="row">
         <div class="one-half column">
           <label for="UnitName">Unit name</label>
@@ -162,7 +161,7 @@
 	  </div>
 	  <div class="row">
 		  <div   class="three columns">
-			<button onclick="">Next unit</button>
+			<button onclick="UIController.editNextUnit()">Next unit</button>
 		  </div>
 		  <div   class="three columns">
 			<button onclick="">Set position</button>
@@ -182,7 +181,6 @@
         <button onclick="UIController.showMainMenu()">Main menu</button>
       </div>
 	</div>
-	</form>
   </div>
   
   
@@ -205,29 +203,6 @@
   </div>
   
   
-  <div class="container" id="AddUnitView">
-    <form onsubmit="UIController.addUnit();return false;">    
-	  <div class="row"  style="margin-top: 5%">
-        <div class="six columns">
-          <label for="NewUnitName">Unit name</label>
-          <input class="u-full-width" id="NewUnitName">
-        </div>
-	  </div>
-	  <div class="row">
-        <div class="one-half column">
-		  <label for="faction0">Union</label>
-	      <input type="radio" id="faction0" name="faction0Radio" value="faction0">
-		</div>
-        <div class="one-half column">
-		  <label for="faction1">Confederates</label>
-          <input type="radio" id="faction1" name="faction1Radio" value="faction1">
-	    </div>
-	  </div>
-	  <input class="button" type="submit" value="Add to position">
-	</form>
-  </div>
-	  
- 
 <script src="js/doubleblind.js"></script>
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->

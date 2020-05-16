@@ -412,12 +412,13 @@ var UIController = {
 	basicHelp : document.getElementById('BasicHelp'),
 	editView : document.getElementById('EditView'),
 	editWarning : document.getElementById('EditWarning'),
-	addUnitView : document.getElementById('AddUnitView'),
 	unitListTemplate : document.querySelector('#UnitListTemplate'),
 	unitListTable0 : document.querySelector('#UnitListTableFaction0'),
 	unitListTable1 : document.querySelector('#UnitListTableFaction1'),
-	unitNameInput : document.querySelector('#NewUnitName'),
+	unitNameInput : document.querySelector('#UnitName'),
+	unitDecriptionInput : document.querySelector('#UnitDescription'),
 	firstStart : true,
+	currentEditedUnit : 0,
 	showMainMenu:function()
 	{
 		this.hideEverything()
@@ -432,7 +433,6 @@ var UIController = {
 			this.basicHelp.style.display = "none"
 			this.mapView.style.display = "none"
 		}
-		this.addUnitView.style.display = "none"
 		this.mainMenu.style.display = "none"
 		this.editView.style.display = "none"
 		this.editWarning.style.display = "none"
@@ -449,17 +449,13 @@ var UIController = {
 	{
 		this.hideEverything()
 		this.updateUnitList()
+		this.showUnitEdited()
 		this.editView.style.display = "block"
 	},
 	showEditWarning: function()
 	{
 		this.hideEverything()
 		this.editWarning.style.display = "block"
-	},
-	showAddUnit: function()
-	{
-		this.hideEverything()
-		this.addUnitView.style.display = "block"
 	},
 	addUnit: function()
 	{
@@ -499,6 +495,32 @@ var UIController = {
 		this.unitListTable1.parentNode.replaceChild(
 		  tbody, this.unitListTable1)
 		this.unitListTable1 = tbody
+	},
+	editNextUnit: function()
+	{
+		this.currentEditedUnit++
+		if(this.currentEditedUnit >= AllUnits.length)
+		  this.currentEditedUnit = 0
+        this.showUnitEdited()	  
+	},
+	showUnitEdited: function()
+	{
+		if(this.currentEditedUnit >= 0 &&
+		   this.currentEditedUnit < AllUnits.length)
+		{
+	      this.unitNameInput.value = 
+		    AllUnits[this.currentEditedUnit].name
+		  this.unitDecriptionInput.value = 
+		    AllUnits[this.currentEditedUnit].description
+		  if(AllUnits[this.currentEditedUnit].faction == 0)
+		  {
+		    document.getElementById("faction0").checked = true;
+		  }
+		  else
+		  {
+			document.getElementById("faction1").checked = true;
+		  }
+		}
 	},
 }
 UIController.showMap(1)
