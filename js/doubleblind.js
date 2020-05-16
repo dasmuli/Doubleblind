@@ -145,6 +145,7 @@ Map.prototype.drawUnitsAtRect = function(xMapPos,yMapPos) {
 		      this.posAsString(xMapPos,yMapPos) ) ) )
 	  {
 		  var yOffset
+		  var color = '#000'
 		  if(isFriendly)
 		  {
 			  yOffset = yOffsetFriendly
@@ -154,6 +155,7 @@ Map.prototype.drawUnitsAtRect = function(xMapPos,yMapPos) {
 		  }
 		  else
 		  {
+			  color = '#F00'
 			  yOffset = yOffsetEnemy
 			  yOffsetEnemy += STACKING_STEP
 			  if(yOffsetFriendly == 0)  // first unit shown centered
@@ -161,14 +163,15 @@ Map.prototype.drawUnitsAtRect = function(xMapPos,yMapPos) {
 		  }
 		  this.drawText(xMapPos,yMapPos,AllUnits[i].name,
 			  (AllUnits[i] == selectedUnit) // selected units bold
-			  ,0,yOffset);
+			  ,0,yOffset,color);
 	  }
   }
 }
 Map.prototype.drawSectorPosition = function(xMapPos,yMapPos
   ,textToShow,xOffset,yOffset)
 {
-	this.drawText(xMapPos,yMapPos,textToShow,false,xOffset,yOffset)
+	this.drawText(xMapPos,yMapPos,textToShow,false
+	  ,xOffset,yOffset,'black')
 }
 Map.prototype.getMapUpperLeftX = function(xMapPos)
 {
@@ -187,12 +190,12 @@ Map.prototype.getMapCenterY = function(yMapPos)
 	return this.getMapUpperLeftY(yMapPos)+CELL_WIDTH/2
 }
 Map.prototype.drawText = function(xMapPos,yMapPos,textToShow,
-  isSelected,xOffset,yOffset)
+  isSelected,xOffset,yOffset,color)
  {
 	var text = document.createElementNS(this.ns, 'text')
 	text.setAttributeNS(null, 'x',this.getMapCenterX(xMapPos)+xOffset)
 	text.setAttributeNS(null, 'y',this.getMapCenterY(yMapPos)+yOffset)
-	text.setAttributeNS(null, 'fill', '#000')
+	text.setAttributeNS(null, 'fill', color)
 	text.setAttributeNS(null, 'font-size', '2')
 	if(isSelected)
 	{
