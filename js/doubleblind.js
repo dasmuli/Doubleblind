@@ -37,6 +37,8 @@ var testUnit2 = new Unit('Iron Brigade','Cmd 7',5,5,0)
 // Does NOT have x/y positions - unit values
 // are important. The Map is rerendered every select/move.
 
+const CELL_WIDTH = 10
+
 function Map(width,height) {
   this.showFaction = 1
   this.width = width
@@ -59,6 +61,17 @@ Map.prototype.draw = function() {
 	  {
 		this.drawRect(x,y);
 	  }
+  }
+  // draw sector positions
+  for (var y = 0, ly = this.height; y < ly; y++)
+  {
+	  this.drawSectorPosition(-1,y,y+1,CELL_WIDTH/2-1,0);
+	  this.drawSectorPosition(this.width,y,y+1,-(CELL_WIDTH/2-1),0);
+  }
+  for (var x = 0, lx = this.width; x < lx; x++)
+  {
+	  this.drawSectorPosition(x,-1,x+1,0,(CELL_WIDTH/2-1));
+	  this.drawSectorPosition(x,this.height,x+1,0,-(CELL_WIDTH/2-1));
   }
 };
 Map.prototype.posAsString = function(mapX,mapY) {
@@ -125,23 +138,42 @@ Map.prototype.drawUnitsAtRect = function(xMapPos,yMapPos) {
 		  //UnitsAtPosition.push(AllUnits[i]);
 		  if(AllUnits[i] == selectedUnit)
 		  {
-			this.drawText(xMapPos,yMapPos,AllUnits[i].name,true);
+			this.drawText(xMapPos,yMapPos,AllUnits[i].name,true,0,0);
 		  }
 		  else
 		  {
-		    this.drawText(xMapPos,yMapPos,AllUnits[i].name,false);
+		    this.drawText(xMapPos,yMapPos,AllUnits[i].name,false,0,0);
 		  }
 	  }
   }
 }
+Map.prototype.drawSectorPosition = function(xMapPos,yMapPos
+  ,textToShow,xOffset,yOffset)
+{
+	this.drawText(xMapPos,yMapPos,textToShow,false,xOffset,yOffset)
+}
+Map.prototype.getMapUpperLeftX = function(xMapPos)
+{
+	return (xMapPos+1)*CELL_WIDTH
+}
+Map.prototype.getMapUpperLeftY = function(yMapPos)
+{
+	return (yMapPos+1)*CELL_WIDTH
+}
+Map.prototype.getMapCenterX = function(xMapPos)
+{
+	return this.getMapUpperLeftX(xMapPos)+CELL_WIDTH/2
+}
+Map.prototype.getMapCenterY = function(yMapPos)
+{
+	return this.getMapUpperLeftY(yMapPos)+CELL_WIDTH/2
+}
 Map.prototype.drawText = function(xMapPos,yMapPos,textToShow,
-  isSelected)
+  isSelected,xOffset,yOffset)
  {
 	var text = document.createElementNS(this.ns, 'text')
-	text.setAttributeNS(null, 'x',xMapPos*10+5)
-	text.setAttributeNS(null, 'y',yMapPos*10+5)
-	//text.setAttributeNS(null, 'width', 8)
-	//text.setAttributeNS(null, 'height',8)
+	text.setAttributeNS(null, 'x',this.getMapCenterX(xMapPos)+xOffset)
+	text.setAttributeNS(null, 'y',this.getMapCenterY(yMapPos)+yOffset)
 	text.setAttributeNS(null, 'fill', '#000')
 	text.setAttributeNS(null, 'font-size', '2')
 	if(isSelected)
@@ -185,10 +217,10 @@ Map.prototype.isPositionRevealed = function(xMapPos,yMapPos) {
 };
 Map.prototype.drawRect = function(xMapPos,yMapPos) {
 	var rect = document.createElementNS(this.ns, 'rect')
-	rect.setAttributeNS(null, 'x',xMapPos*10+1)
-	rect.setAttributeNS(null, 'y',yMapPos*10+1)
-	rect.setAttributeNS(null, 'width', 8)
-	rect.setAttributeNS(null, 'height',8)
+	rect.setAttributeNS(null, 'x',this.getMapUpperLeftX(xMapPos)+1)
+	rect.setAttributeNS(null, 'y',this.getMapUpperLeftY(yMapPos)+1)
+	rect.setAttributeNS(null, 'width', CELL_WIDTH-2)
+	rect.setAttributeNS(null, 'height',CELL_WIDTH-2)
 	if(selectedUnit && Math.abs(xMapPos-selectedUnit.mapX) <= 1
 	  && Math.abs(yMapPos-selectedUnit.mapY) <= 1)
 	  rect.setAttributeNS(null, 'fill', '#A1A1A1')
