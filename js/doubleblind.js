@@ -414,7 +414,8 @@ var UIController = {
 	editWarning : document.getElementById('EditWarning'),
 	addUnitView : document.getElementById('AddUnitView'),
 	unitListTemplate : document.querySelector('#UnitListTemplate'),
-	unitListTable : document.querySelector('#UnitListTable'),
+	unitListTable0 : document.querySelector('#UnitListTableFaction0'),
+	unitListTable1 : document.querySelector('#UnitListTableFaction1'),
 	unitNameInput : document.querySelector('#NewUnitName'),
 	firstStart : true,
 	showMainMenu:function()
@@ -473,20 +474,31 @@ var UIController = {
 		map.draw()
 		this.showEdit()
 	},
-	updateUnitList: function()
+	updateFactionUnitList: function(faction)
 	{
 		var new_tbody = document.createElement('tbody')
 		for (var i = 0, li = AllUnits.length; i < li; i++)
         {
+			if(faction != AllUnits[i].faction)
+			  continue
 			var clone = this.unitListTemplate.content.cloneNode(true);
 			var td = clone.querySelectorAll("td");
 			td[0].textContent = AllUnits[i].name
 			td[1].textContent = AllUnits[i].description
 			new_tbody.appendChild(clone)
         }
-		this.unitListTable.parentNode.replaceChild(
-		  new_tbody, this.unitListTable)
-		this.unitListTable = new_tbody
+        return new_tbody
+	},
+	updateUnitList: function()
+	{
+		tbody = this.updateFactionUnitList(0,this.unitListTable0)
+		this.unitListTable0.parentNode.replaceChild(
+		  tbody, this.unitListTable0)
+		this.unitListTable0 = tbody
+		tbody = this.updateFactionUnitList(1,this.unitListTable0)
+		this.unitListTable1.parentNode.replaceChild(
+		  tbody, this.unitListTable1)
+		this.unitListTable1 = tbody
 	},
 }
 UIController.showMap(1)
