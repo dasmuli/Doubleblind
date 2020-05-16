@@ -529,6 +529,10 @@ var UIController = {
 		document.getElementById("faction1Radio").innerHTML 
 		  = FactionName[1]
 		// set in main menu
+		document.getElementById("faction0MapViewButton").innerHTML 
+		  = "Map view: "+FactionName[0]
+		document.getElementById("faction1MapViewButton").innerHTML 
+		  = "Map view: "+FactionName[1]
 	},
 	updateUnitList: function()
 	{
