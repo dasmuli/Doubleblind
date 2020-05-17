@@ -424,6 +424,7 @@ var UIController = {
 	unitDecriptionInput : document.querySelector('#UnitDescription'),
 	faction0NameInput : document.querySelector('#Faction0Name'),
 	faction1NameInput : document.querySelector('#Faction1Name'),
+	showMapWarning : document.getElementById("MapViewWarning"),
 	firstStart : true,
 	currentEditedUnit : 0,
 	selectedMapY : 0,
@@ -445,10 +446,16 @@ var UIController = {
 		this.mainMenu.style.display = "none"
 		this.editView.style.display = "none"
 		this.editWarning.style.display = "none"
+		this.showMapWarning.style.display = "none"
 	},
 	showMap: function(faction)
 	{
+		this.hideEverything()
+		this.showMapWarning.style.display = "block"
 		map.showFaction = faction
+	},
+	showMapNow: function(faction)
+	{
 		GameEngine.prepareRound(faction)
 		map.draw()
 		this.hideEverything()
@@ -627,4 +634,4 @@ var UIController = {
 		}
 	},
 }
-UIController.showMap(1)
+UIController.showMapNow()
