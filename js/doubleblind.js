@@ -291,6 +291,7 @@ Map.prototype.PositionClicked = function(xMapPos,yMapPos) {
 	        < MAX_FACTION_STACKING )
 	 {
 		 selectedUnit.MoveTo(xMapPos,yMapPos)
+		 GameEngine.autosave()
 	 }
     selectedUnit = undefined	
   }
@@ -433,13 +434,54 @@ map.draw()
 var GameEngine = {
 	prepareRound:function(faction)
 	{
-		selectedUnit = undefined
+	  selectedUnit = undefined
 	  for (var i = 0, li = AllUnits.length; i < li; i++)
 	  {
 		  if(AllUnits[i].faction != faction)
 		  {
 			  AllUnits[i].hasMoved = false
 		  }
+	  }
+	},
+	currentScenarioToObject:function()
+	{
+	  var scenarioObject = {};
+	  scenarioObject["FactionName"] = FactionName.slice(0)
+	  scenarioObject["AllUnits"]    = AllUnits.slice(0)
+	  return scenarioObject
+	},
+	loadFromScenario:function(scenarioAsJSON)
+	{
+      var scenarioObject = JSON.parse(scenarioAsJSON)
+	  FactionName = scenarioObject["FactionName"]
+	  //AllUnits = scenarioObject["AllUnits"]
+	  AllUnits = [];
+	  for(var i = 0; i < scenarioObject.AllUnits.length;i++)
+	  {
+		  var unit = new Unit(
+		    scenarioObject.AllUnits[i].name,
+			scenarioObject.AllUnits[i].description,
+			scenarioObject.AllUnits[i].mapX,
+			scenarioObject.AllUnits[i].mapY,
+			scenarioObject.AllUnits[i].faction,
+		  )
+		  unit.hasMoved = scenarioObject.AllUnits[i].hasMoved
+	  }
+	},
+	autosave:function()
+	{
+		alert("autosaving...")
+	  var scenario = this.currentScenarioToObject()
+	  localStorage.setItem('autosave.scenario', 
+	    JSON.stringify(scenario) );
+	},
+	autoload:function()
+	{
+	  var scenario = localStorage.getItem('autosave.scenario')
+	  if(scenario != undefined)
+	  {
+		alert("autosave found - loading")
+		this.loadFromScenario(scenario)
 	  }
 	},
 }
@@ -712,4 +754,5 @@ var UIController = {
 		}
 	},
 }
+GameEngine.autoload()
 UIController.showMapNow()
