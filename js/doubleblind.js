@@ -74,6 +74,11 @@ function Map(width,height) {
   this.revealedPosition = new Set()
   return this;
 }
+
+Map.prototype.setShowRevealedOnly = function(enable) {
+	this.showRevealedOnly = enable
+};
+
 Map.prototype.draw = function() {
   // delete old map
   while (this.svg.lastChild) {
@@ -101,9 +106,11 @@ Map.prototype.draw = function() {
   }
   this.drawOffboardRect(this.showFaction)
 };
+
 Map.prototype.posAsString = function(mapX,mapY) {
 	return mapX+","+mapY
 };
+
 Map.prototype.calculateVisibility = function() {
 	this.revealedPosition.clear()
 	// calculate for each faction independantly
@@ -472,6 +479,7 @@ var UIController = {
 	showMapNow: function(faction)
 	{
 		GameEngine.prepareRound(faction)
+		map.setShowRevealedOnly(false)
 		map.draw()
 		this.hideEverything()
 		this.mapView.style.display = "block"
@@ -509,6 +517,7 @@ var UIController = {
 	showAllMap: function()
 	{
 		this.hideEverything()
+		map.setShowRevealedOnly(false)
 		map.selectPositionMode = (x,y) => UIController.mapWasShown(x,y)
 		this.showMap(AllFactions)
 	},
