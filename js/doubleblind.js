@@ -467,10 +467,10 @@ var GameEngine = {
 		  )
 		  unit.hasMoved = scenarioObject.AllUnits[i].hasMoved
 	  }
+	  UIController.updateFactionNamesView()
 	},
 	autosave:function()
 	{
-		alert("autosaving...")
 	  var scenario = this.currentScenarioToObject()
 	  localStorage.setItem('autosave.scenario', 
 	    JSON.stringify(scenario) );
@@ -480,7 +480,6 @@ var GameEngine = {
 	  var scenario = localStorage.getItem('autosave.scenario')
 	  if(scenario != undefined)
 	  {
-		alert("autosave found - loading")
 		this.loadFromScenario(scenario)
 	  }
 	},
@@ -640,6 +639,11 @@ var UIController = {
 		this.updateFactionNames()
 	},
 	updateFactionNames: function()
+	{
+		this.updateFactionNamesView()
+		GameEngine.autosave()
+	},
+	updateFactionNamesView: function()
 	{
 		// set in edit menu
 		this.faction0NameInput.value = FactionName[0]
