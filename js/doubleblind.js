@@ -759,7 +759,9 @@ var UIController = {
 		  this.selectedMapY = AllUnits[this.currentEditedUnit].mapY
 		}
 	},
-	download: function(filename, text) {
+	download: function(filename) {
+      var scenario = GameEngine.currentScenarioToObject()
+	  var text = JSON.stringify(scenario)
       var element = document.createElement('a');
       element.setAttribute('href', 
 	    'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
