@@ -770,7 +770,25 @@ var UIController = {
       document.body.appendChild(element);
       element.click();
       document.body.removeChild(element);
-    }
+    },
+	load: function() {
+		document.getElementById('fileInput').click();
+	},
 }
+
+// file loading callback
+document.getElementById('fileInput').addEventListener('change', function selectedFileChanged() {
+  if (this.files.length === 0) {
+    console.log('No file selected.');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function fileReadCompleted() {
+    // when the reader is done, the content is in reader.result.
+    GameEngine.loadFromScenario(reader.result)
+  };
+  reader.readAsText(this.files[0]);
+});
 GameEngine.autoload()
 UIController.showMapNow()

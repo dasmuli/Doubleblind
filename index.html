@@ -92,6 +92,12 @@
 	  <div class="one-half column">
 		<button onclick="UIController.showEditWarning()">Edit game</button>
 	  </div>
+	</div>
+	<div class="row" style="margin-top: 7%">
+	  <div class="one-half column">
+	    <button onclick="UIController.load()">Load scenario</button>
+		<input type="file" id="fileInput" accept=".scn" style="display: none;">
+	  </div>
 	  <div class="one-half column">
 		<button onclick="UIController.download('scenario.scn')">Save scenario</button>
 	  </div>
