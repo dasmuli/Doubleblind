@@ -492,6 +492,8 @@ var GameEngine = {
 	  var scenarioObject = {};
 	  scenarioObject["FactionName"] = FactionName.slice(0)
 	  scenarioObject["AllUnits"]    = AllUnits.slice(0)
+	  scenarioObject["MapTerrainElements"]   
+	                                = MapTerrainElements.slice(0)
 	  return scenarioObject
 	},
 	loadFromScenario:function(scenarioAsJSON)
@@ -510,6 +512,17 @@ var GameEngine = {
 			scenarioObject.AllUnits[i].faction,
 		  )
 		  unit.hasMoved = scenarioObject.AllUnits[i].hasMoved
+	  }
+	  if(scenarioObject.MapTerrainElements != undefined)
+	  {
+	    for(var i = 0; i < scenarioObject.MapTerrainElements.length;i++)
+	    {
+		  var mapElement = new MapElement(
+			scenarioObject.MapTerrainElements[i].mapX,
+			scenarioObject.MapTerrainElements[i].mapY,
+			scenarioObject.MapTerrainElements[i].type,
+		  )
+	    }
 	  }
 	  UIController.updateFactionNamesView()
 	},
@@ -821,11 +834,11 @@ var UIController = {
 	addWoods: function() {
 		this.hideEverything()
 		map.selectPositionMode = 
-		  (x,y) => UIController.addTerrainWoods(x,y)
+		  (x,y) => UIController.addTerrain(x,y,WOODS)
 		this.showMap(AllFactions)
 		this.mapViewBackCallback = () => UIController.showEdit()
     },
-	addTerrainWoods: function(x,y) {
+	addTerrain: function(x,y) {
 		var terrainElements = getMapElementAt(x,y)
 		if(terrainElements != undefined)
 		{
@@ -836,6 +849,7 @@ var UIController = {
 			new MapElement(x,y,WOODS)
 		}
 		map.draw()
+		GameEngine.autosave()
 	},
 }
 
