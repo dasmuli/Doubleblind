@@ -524,6 +524,7 @@ var GameEngine = {
 		  )
 		  unit.hasMoved = scenarioObject.AllUnits[i].hasMoved
 	  }
+	  MapTerrainElements = [];
 	  if(scenarioObject.MapTerrainElements != undefined)
 	  {
 	    for(var i = 0; i < scenarioObject.MapTerrainElements.length;i++)
