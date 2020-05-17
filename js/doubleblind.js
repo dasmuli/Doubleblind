@@ -4,6 +4,7 @@ const Offboard = -3
 const AllFactions = -2
 const MAX_FACTION_STACKING = 2
 
+const CLEAR = 44
 const WOODS = 55
 const BUILDINGS = 66
 const HILL = 77
@@ -29,6 +30,22 @@ function getMapElementAt(mapX,mapY) {
 	  }
   }
   return undefined
+}
+function deleteMapElementAt(mapX,mapY) {
+  var index = -1
+  for (var i = 0, li = MapTerrainElements.length; i < li; i++)
+  {
+	  if(MapTerrainElements[i].mapX == mapX &&
+	     MapTerrainElements[i].mapY == mapY)
+	  {
+	    index = i
+		break;
+	  }
+  }
+  if(i >= 0)
+  {
+	  MapTerrainElements.splice(i,1)
+  }
 }
 new MapElement(5,5,WOODS)
 new MapElement(5,10,BUILDINGS)
@@ -864,6 +881,13 @@ var UIController = {
 		this.showMap(AllFactions)
 		this.mapViewBackCallback = () => UIController.showEdit()
     },
+	clearTerrain: function() {
+		this.hideEverything()
+		map.selectPositionMode = 
+		  (x,y) => UIController.deleteTerrain(x,y)
+		this.showMap(AllFactions)
+		this.mapViewBackCallback = () => UIController.showEdit()
+    },
 	addTerrain: function(x,y,type) {
 		var terrainElements = getMapElementAt(x,y)
 		if(terrainElements != undefined)
@@ -874,6 +898,11 @@ var UIController = {
 		{
 			new MapElement(x,y,type)
 		}
+		map.draw()
+		GameEngine.autosave()
+	},
+	deleteTerrain: function(x,y) {
+		deleteMapElementAt(x,y)
 		map.draw()
 		GameEngine.autosave()
 	},
