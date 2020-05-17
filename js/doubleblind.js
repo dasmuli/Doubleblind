@@ -3,8 +3,34 @@
 const Offboard = -3
 const AllFactions = -2
 const MAX_FACTION_STACKING = 2
+
+const WOODS = 55
+const BUILDINGS = 66
+const HILL = 77
+
 var AllUnits = []
+var MapTerrainElements = []
 var FactionName = [ "Unionn", "Confederatess" ]
+
+function MapElement(mapX,mapY,type) {
+  this.mapX = mapX;
+  this.mapY = mapY;
+  this.type = type;
+  MapTerrainElements.push( this )
+  return this;
+}
+function getMapElementAt(mapX,mapY) {
+  for (var i = 0, li = MapTerrainElements.length; i < li; i++)
+  {
+	  if(MapTerrainElements[i].mapX == mapX &&
+	     MapTerrainElements[i].mapY == mapY)
+	  {
+	    return MapTerrainElements[i]
+	  }
+	  return undefined
+  }
+}
+new MapElement(5,5,WOODS)
 
 function Unit(name,description,mapX,mapY,faction) {
   this.name = name;
@@ -64,7 +90,7 @@ function Map(width,height) {
   this.width = width
   this.height = height
   this.showRevealedOnly = false
-  this.svg = document.getElementById('SVGMap')
+  this.svg = document.getElementById('mainMapContent')//'SVGMap')
   this.ns = 'http://www.w3.org/2000/svg'
   // used to place new units in edit mode
   this.selectPositionMode
@@ -377,11 +403,30 @@ Map.prototype.drawOffboardRect = function(faction) {
 	  1,yOffsetText,'black')
 }
 Map.prototype.drawRect = function(xMapPos,yMapPos) {
+	// ground indicator
+	var groundElement = getMapElementAt(xMapPos,yMapPos)
+	if(groundElement != undefined)
+	{
+	  var groundRect = document.createElementNS(this.ns, 'rect')
+	  groundRect.setAttributeNS(null, 'x',this.getMapUpperLeftX(xMapPos)+1)
+	  groundRect.setAttributeNS(null, 'y',this.getMapUpperLeftY(yMapPos)+1)
+	  groundRect.setAttributeNS(null, 'width', CELL_WIDTH-2)
+	  groundRect.setAttributeNS(null, 'height',CELL_WIDTH-2)
+	  if(groundElement.type == WOODS)
+	  {
+	    groundRect.setAttributeNS(null, 'style',
+		"stroke: none; fill: url(#patternWoods);") 
+	  }
+	  this.svg.appendChild(groundRect)
+	}
+	
+	// visibility filter
 	var rect = document.createElementNS(this.ns, 'rect')
 	rect.setAttributeNS(null, 'x',this.getMapUpperLeftX(xMapPos)+1)
 	rect.setAttributeNS(null, 'y',this.getMapUpperLeftY(yMapPos)+1)
 	rect.setAttributeNS(null, 'width', CELL_WIDTH-2)
 	rect.setAttributeNS(null, 'height',CELL_WIDTH-2)
+	rect.setAttributeNS(null, 'fill-opacity',"0.3")
 	if(selectedUnit && 
 	  !selectedUnit.IsAtPosition(xMapPos,yMapPos) &&
 	  this.countUnitsAt(xMapPos,yMapPos,this.showFaction)
@@ -389,7 +434,7 @@ Map.prototype.drawRect = function(xMapPos,yMapPos) {
 	  ((Math.abs(xMapPos-selectedUnit.mapX) <= 1
 	  && Math.abs(yMapPos-selectedUnit.mapY) <= 1)
 	  || selectedUnit.IsOffboard() ) )
-	  rect.setAttributeNS(null, 'fill', '#A1A1A1')
+	  rect.setAttributeNS(null, 'fill', '#111111')
 	else if(this.isPositionRevealed(xMapPos,yMapPos))
 	{
 	  rect.setAttributeNS(null, 'fill', '#FFF')
@@ -399,9 +444,9 @@ Map.prototype.drawRect = function(xMapPos,yMapPos) {
 	else
 	{
 	  if(this.showRevealedOnly)
-		rect.setAttributeNS(null, 'fill', '#C1C1C1')
+		rect.setAttributeNS(null, 'fill', '#818181')
 	  else
-	    rect.setAttributeNS(null, 'fill', '#E1E1E1')
+		rect.setAttributeNS(null, 'fill', '#C1C1C1')
 	}
 	rect.setAttributeNS(null, 'onclick', "map.PositionClicked("
 	  +xMapPos+","+yMapPos+")")
