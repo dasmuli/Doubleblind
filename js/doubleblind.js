@@ -31,6 +31,7 @@ function getMapElementAt(mapX,mapY) {
   return undefined
 }
 new MapElement(5,5,WOODS)
+new MapElement(5,10,BUILDINGS)
 
 function Unit(name,description,mapX,mapY,faction) {
   this.name = name;
@@ -415,6 +416,11 @@ Map.prototype.drawRect = function(xMapPos,yMapPos) {
 	  {
 	    groundRect.setAttributeNS(null, 'style',
 		"stroke: none; fill: url(#patternWoods);") 
+	  }
+	  else if(groundElement.type == BUILDINGS)
+	  {
+	    groundRect.setAttributeNS(null, 'style',
+		"stroke: none; fill: url(#patternBuildings);") 
 	  }
 	  this.svg.appendChild(groundRect)
 	}
@@ -838,15 +844,22 @@ var UIController = {
 		this.showMap(AllFactions)
 		this.mapViewBackCallback = () => UIController.showEdit()
     },
-	addTerrain: function(x,y) {
+	addBuildings: function() {
+		this.hideEverything()
+		map.selectPositionMode = 
+		  (x,y) => UIController.addTerrain(x,y,BUILDINGS)
+		this.showMap(AllFactions)
+		this.mapViewBackCallback = () => UIController.showEdit()
+    },
+	addTerrain: function(x,y,type) {
 		var terrainElements = getMapElementAt(x,y)
 		if(terrainElements != undefined)
 		{
-			terrainElements.type = WOODS
+			terrainElements.type = type
 		}
 		else
 		{
-			new MapElement(x,y,WOODS)
+			new MapElement(x,y,type)
 		}
 		map.draw()
 		GameEngine.autosave()

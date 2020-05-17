@@ -58,6 +58,12 @@
 				   patternUnits="userSpaceOnUse" >
 			  <circle cx="1" cy="1" r="1" style="stroke: none; fill: #ccff99" />
 		  </pattern>
+		  <pattern id="patternBuildings"
+				   x="0" y="0" width="8" height="9"
+				   patternUnits="userSpaceOnUse" >
+			  <rect cx="1" cy="1" width="2" height="1" style="stroke: none; fill: #cc6600" />
+			  <rect cx="3" cy="2" width="1" height="2" style="stroke: none; fill: #cc6600" />
+		  </pattern>
 		</defs>
 		<g id="mainMapContent"></g>
 		</svg>
@@ -213,6 +219,9 @@
 	<div class="row">
       <div   class="three columns">
         <button onclick="UIController.addWoods()">Terrain woods</button>
+      </div>
+	  <div   class="three columns">
+        <button onclick="UIController.addBuildings()">Terrain buildings</button>
       </div>
 	</div>
   </div>
