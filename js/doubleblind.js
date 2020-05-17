@@ -681,6 +681,7 @@ var UIController = {
 		  {
 			AllUnits[this.currentEditedUnit].faction = 1
 		  }
+		  AllUnits[this.currentEditedUnit].hasMoved = false
 		  AllUnits[this.currentEditedUnit].mapX
 		    = this.selectedMapX
 		  AllUnits[this.currentEditedUnit].mapY
