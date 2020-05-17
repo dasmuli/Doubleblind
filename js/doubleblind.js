@@ -447,10 +447,19 @@ var UIController = {
 	faction0NameInput : document.querySelector('#Faction0Name'),
 	faction1NameInput : document.querySelector('#Faction1Name'),
 	showMapWarning : document.getElementById("MapViewWarning"),
+	mapViewBackCallback : undefined,
 	firstStart : true,
 	currentEditedUnit : 0,
 	selectedMapY : 0,
 	selectedMapY : 0,
+	MapViewBackButton:function()
+	{
+		if(this.mapViewBackCallback != undefined)
+		{
+			this.mapViewBackCallback()
+			this.mapViewBackCallback = undefined
+		}
+	},
 	showMainMenu:function()
 	{
 		this.hideEverything()
@@ -472,6 +481,7 @@ var UIController = {
 	},
 	showMapRevealed: function()
 	{
+		this.mapViewBackCallback = () => UIController.showMainMenu()
 		map.showFaction = AllFactions
 		map.setShowRevealedOnly(true)
 		map.draw()
@@ -494,6 +504,7 @@ var UIController = {
 	},
 	showMapNow: function(faction)
 	{
+		this.mapViewBackCallback = () => UIController.showMainMenu()
 		GameEngine.prepareRound(faction)
 		map.setShowRevealedOnly(false)
 		map.draw()
@@ -537,6 +548,7 @@ var UIController = {
 		map.setShowRevealedOnly(false)
 		map.selectPositionMode = (x,y) => UIController.mapWasShown(x,y)
 		this.showMap(AllFactions)
+		this.mapViewBackCallback = () => UIController.showEdit()
 	},
 	mapWasShown: function(mapX,mapY)
 	{
