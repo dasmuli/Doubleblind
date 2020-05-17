@@ -462,6 +462,7 @@ var UIController = {
 	},
 	showMainMenu:function()
 	{
+		map.selectPositionMode =undefined // no special actions on next map click
 		this.hideEverything()
 		this.mainMenu.style.display = "block"
 	},
