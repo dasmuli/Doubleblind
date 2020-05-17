@@ -560,6 +560,7 @@ var UIController = {
 		this.showEdit()
 		this.selectedMapX = mapX
 		this.selectedMapY = mapY
+		this.updateUnitEdited() // position auto updates edit unit
 	},
 	showAllMap: function()
 	{
