@@ -27,8 +27,8 @@ function getMapElementAt(mapX,mapY) {
 	  {
 	    return MapTerrainElements[i]
 	  }
-	  return undefined
   }
+  return undefined
 }
 new MapElement(5,5,WOODS)
 
@@ -304,7 +304,6 @@ Map.prototype.PositionClicked = function(xMapPos,yMapPos) {
 	  if(this.selectPositionMode != undefined)
 	  {
 	    this.selectPositionMode(xMapPos,yMapPos)
-	    this.selectPositionMode = undefined
 	  }
 	  return;
   }
@@ -818,6 +817,25 @@ var UIController = {
     },
 	load: function() {
 		document.getElementById('fileInput').click();
+	},
+	addWoods: function() {
+		this.hideEverything()
+		map.selectPositionMode = 
+		  (x,y) => UIController.addTerrainWoods(x,y)
+		this.showMap(AllFactions)
+		this.mapViewBackCallback = () => UIController.showEdit()
+    },
+	addTerrainWoods: function(x,y) {
+		var terrainElements = getMapElementAt(x,y)
+		if(terrainElements != undefined)
+		{
+			terrainElements.type = WOODS
+		}
+		else
+		{
+			new MapElement(x,y,WOODS)
+		}
+		map.draw()
 	},
 }
 
