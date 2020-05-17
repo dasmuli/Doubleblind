@@ -63,6 +63,7 @@ function Map(width,height) {
   this.showFaction = 1
   this.width = width
   this.height = height
+  this.showRevealedOnly = false
   this.svg = document.getElementById('SVGMap')
   this.ns = 'http://www.w3.org/2000/svg'
   // used to place new units in edit mode
@@ -166,12 +167,15 @@ Map.prototype.drawUnitsAtRect = function(xMapPos,yMapPos) {
 	  if(AllUnits[i].mapX == xMapPos &&
 	     AllUnits[i].mapY == yMapPos &&
 		 // allways show all friendly units
-		 ( isFriendly
-		 // or show when all units are to be shown
-		 || this.showFaction == AllFactions
-		 // or show unit when the position is in the visibleSet
-		 || this.visibleSet[this.showFaction].has(
+		 ( ( this.showRevealedOnly == false &&
+		    (isFriendly
+		    // or show when all units are to be shown
+		    || this.showFaction == AllFactions
+		    // or show unit when the position is in the visibleSet
+		    || this.visibleSet[this.showFaction].has(
 		      this.posAsString(xMapPos,yMapPos) ) ) )
+		 || this.revealedPosition.has(
+		      this.posAsString(xMapPos,yMapPos) ) ) )  
 	  {
 		  var textToShow = AllUnits[i].name
 		  var yOffsets
@@ -250,7 +254,8 @@ Map.prototype.drawText = function(xMapPos,yMapPos,textToShow,
 	this.svg.appendChild(text)
 };
 Map.prototype.PositionClicked = function(xMapPos,yMapPos) {
-  if(this.selectPositionMode) // used to place units in edit mode
+  if(  this.selectPositionMode  // used to place units in edit mode
+    || this.showRevealedOnly ) // a mode that should not move units
   {
 	  this.selectPositionMode(xMapPos,yMapPos)
 	  this.selectPositionMode = undefined
@@ -370,7 +375,12 @@ Map.prototype.drawRect = function(xMapPos,yMapPos) {
 	  rect.setAttributeNS(null, 'stroke-width','0.1')
 	}
 	else
-	  rect.setAttributeNS(null, 'fill', '#E1E1E1')
+	{
+	  if(this.showRevealedOnly)
+		rect.setAttributeNS(null, 'fill', '#C1C1C1')
+	  else
+	    rect.setAttributeNS(null, 'fill', '#E1E1E1')
+	}
 	rect.setAttributeNS(null, 'onclick', "map.PositionClicked("
 	  +xMapPos+","+yMapPos+")")
 	this.svg.appendChild(rect)
@@ -387,6 +397,11 @@ Map.prototype.countUnitsAt = function(xMapPos,yMapPos,faction) {
     }
 	return result
 };
+Map.prototype.toggleRevealed = function() {
+	this.showRevealedOnly = !this.showRevealedOnly
+	this.draw()
+}
+
 
 var map = new Map(12,8)
 map.draw()
@@ -460,6 +475,10 @@ var UIController = {
 		map.draw()
 		this.hideEverything()
 		this.mapView.style.display = "block"
+	},
+	toggleRevealedOnly: function()
+	{
+		map.toggleRevealed()
 	},
 	showEdit: function()
 	{
