@@ -505,10 +505,12 @@ var UIController = {
 			this.showMapWarning.style.display = "block"
 		}
 	},
-	showMapNow: function(faction)
+	showMapNow: function()
 	{
 		this.mapViewBackCallback = () => UIController.showMainMenu()
-		GameEngine.prepareRound(faction)
+		GameEngine.prepareRound(map.showFaction)
+		document.getElementById("LastMoveIndicator").innerHTML =
+		  "Last move: " + FactionName[map.showFaction]
 		map.setShowRevealedOnly(false)
 		map.draw()
 		this.hideEverything()
