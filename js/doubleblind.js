@@ -104,7 +104,18 @@ Map.prototype.draw = function() {
 	  this.drawSectorOrdinate(x,-1,x+1,0,(CELL_WIDTH/2-1));
 	  this.drawSectorOrdinate(x,this.height,x+1,0,-(CELL_WIDTH/2-1));
   }
-  this.drawOffboardRect(this.showFaction)
+  if(!this.showRevealedOnly)
+  {
+    if(this.showFaction == AllFactions)
+    {
+	  this.drawOffboardRect(0)
+      this.drawOffboardRect(1)	
+    }
+	else
+	{	
+      this.drawOffboardRect(this.showFaction)
+	}
+  }
 };
 
 Map.prototype.posAsString = function(mapX,mapY) {
