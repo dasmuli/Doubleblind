@@ -275,8 +275,11 @@ Map.prototype.PositionClicked = function(xMapPos,yMapPos) {
   if(  this.selectPositionMode  // used to place units in edit mode
     || this.showRevealedOnly ) // a mode that should not move units
   {
-	  this.selectPositionMode(xMapPos,yMapPos)
-	  this.selectPositionMode = undefined
+	  if(this.selectPositionMode != undefined)
+	  {
+	    this.selectPositionMode(xMapPos,yMapPos)
+	    this.selectPositionMode = undefined
+	  }
 	  return;
   }
   if(selectedUnit != undefined &&
