@@ -602,6 +602,7 @@ var UIController = {
 		this.selectedMapX = mapX
 		this.selectedMapY = mapY
 		this.updateUnitEdited() // position auto updates edit unit
+		GameEngine.autosave()  // and save
 	},
 	showAllMap: function()
 	{
@@ -734,6 +735,7 @@ var UIController = {
 		  AllUnits[this.currentEditedUnit].mapY
 		    = this.selectedMapY
 		  this.updateUnitList()
+		  GameEngine.autosave()
 		}
 	},
 	showUnitEdited: function()
