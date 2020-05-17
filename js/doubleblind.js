@@ -470,11 +470,27 @@ var UIController = {
 		this.editWarning.style.display = "none"
 		this.showMapWarning.style.display = "none"
 	},
+	showMapRevealed: function()
+	{
+		map.showFaction = AllFactions
+		map.setShowRevealedOnly(true)
+		map.draw()
+		this.hideEverything()
+		this.mapView.style.display = "block"
+		document.getElementById("toggleRevealedButton").style.display = "none"
+	},
 	showMap: function(faction)
 	{
 		this.hideEverything()
-		this.showMapWarning.style.display = "block"
 		map.showFaction = faction
+		if(faction == AllFactions)
+		{
+			this.showMapNow()
+		}
+		else
+		{
+			this.showMapWarning.style.display = "block"
+		}
 	},
 	showMapNow: function(faction)
 	{
@@ -483,6 +499,7 @@ var UIController = {
 		map.draw()
 		this.hideEverything()
 		this.mapView.style.display = "block"
+		document.getElementById("toggleRevealedButton").style.display = "block"
 	},
 	toggleRevealedOnly: function()
 	{

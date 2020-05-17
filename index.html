@@ -59,7 +59,7 @@
       <div class="one-half column">
         <button onclick="UIController.showMainMenu()">End movement</button>
       </div>
-	  <div class="one-half column">
+	  <div class="one-half column" id="toggleRevealedButton">
         <button onclick="UIController.toggleRevealedOnly()">
 		Revealed only</button>
       </div>
@@ -69,7 +69,7 @@
   
   <div class="container" id="MainMenu">
     <div class="row"  style="margin-top: 5%">
-      <div class="one-half column">
+      <div>
         <h4>Main menu</h4>
 		<p>Hand over to the other side.</p>
 		<p>Last move: Confederates</p>
@@ -81,6 +81,11 @@
 	  </div>
 	  <div class="one-half column">
 		<button onclick="UIController.showMap(1)" id="faction1MapViewButton">Map view: Confederates</button>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class="one-half column">
+		<button onclick="UIController.showMapRevealed()" id="faction1MapViewButton">Map view: Revealed</button>
 	  </div>
 	</div>
 	<div class="row" style="margin-top: 7%">
