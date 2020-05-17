@@ -500,6 +500,8 @@ var UIController = {
 		}
 		else
 		{
+			document.getElementById("MapWarningText").innerHTML 
+		      = "View map for " + FactionName[faction] + "?"
 			this.showMapWarning.style.display = "block"
 		}
 	},
@@ -585,9 +587,9 @@ var UIController = {
 		this.faction1NameInput.value = FactionName[1]
 		// set in edit view unit list
 		document.getElementById("faction0Header").innerHTML 
-		  = FactionName[0]
+		  = FactionName[0]+ " unit"
 		document.getElementById("faction1Header").innerHTML 
-		  = FactionName[1]
+		  = FactionName[1]+ " unit"
 		// set in edit view faction seletion for a unit
 		document.getElementById("faction0Radio").innerHTML 
 		  = FactionName[0]
