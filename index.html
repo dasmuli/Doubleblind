@@ -64,6 +64,12 @@
 			  <rect cx="1" cy="1" width="2" height="1" style="stroke: none; fill: #cc6600" />
 			  <rect cx="3" cy="2" width="1" height="2" style="stroke: none; fill: #cc6600" />
 		  </pattern>
+		  <pattern id="patternHills"
+				   x="0" y="0" width="10" height="10"
+				   patternUnits="userSpaceOnUse" >
+			  <ellipse  cx="5" cy="5" rx="3.5" ry="2.5"
+			  stroke="black" fill="#999966" stroke-width="0.2" />
+		  </pattern>
 		</defs>
 		<g id="mainMapContent"></g>
 		</svg>
@@ -222,6 +228,9 @@
       </div>
 	  <div   class="three columns">
         <button onclick="UIController.addBuildings()">Terrain buildings</button>
+      </div>
+	  <div   class="three columns">
+        <button onclick="UIController.addHills()">Terrain hills</button>
       </div>
 	</div>
   </div>

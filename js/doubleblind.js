@@ -422,6 +422,11 @@ Map.prototype.drawRect = function(xMapPos,yMapPos) {
 	    groundRect.setAttributeNS(null, 'style',
 		"stroke: none; fill: url(#patternBuildings);") 
 	  }
+	  else if(groundElement.type == HILL)
+	  {
+	    groundRect.setAttributeNS(null, 'style',
+		"stroke: none; fill: url(#patternHills);") 
+	  }
 	  this.svg.appendChild(groundRect)
 	}
 	
@@ -848,6 +853,13 @@ var UIController = {
 		this.hideEverything()
 		map.selectPositionMode = 
 		  (x,y) => UIController.addTerrain(x,y,BUILDINGS)
+		this.showMap(AllFactions)
+		this.mapViewBackCallback = () => UIController.showEdit()
+    },
+	addHills: function() {
+		this.hideEverything()
+		map.selectPositionMode = 
+		  (x,y) => UIController.addTerrain(x,y,HILL)
 		this.showMap(AllFactions)
 		this.mapViewBackCallback = () => UIController.showEdit()
     },
