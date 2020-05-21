@@ -126,8 +126,18 @@
   
   
   <div class="container" id="EditView">
-    <form onsubmit="UIController.setNewFactionNames(); return false;">    
-	  <div class="row"  style="margin-top: 5%">
+    <form onsubmit="UIController.setNewFactionNames(); return false;">  <div class="row"  style="margin-top: 5%">
+		<div class="one-half column">
+          <label for="ScenarioName">Scenario name</label>
+          <input class="u-full-width" id="ScenarioName" value="McPherson Ridge">
+        </div>
+		<div class="one-half column">
+          <label for="ScenarioDescription">Scenario description</label>
+          <textarea class="u-full-width" rows = "5" name = "ScenarioDescription"  id="ScenarioDescription">Enter details here...
+         </textarea>
+        </div>
+	  </div>
+	  <div class="row">
         <div class="one-half column">
           <label for="Faction0Name">Faction 1</label>
           <input class="u-full-width" id="Faction0Name" value="Union" />
@@ -137,9 +147,19 @@
           <input class="u-full-width" id="Faction1Name" value="Confederates" />
         </div>
 	  </div>
+	  <div class="row"  style="margin-top: 5%">
+		<div class="one-half column">
+          <label for="ScenarioWidth">Map width</label>
+          <input class="u-full-width" id="ScenarioWidth" value="12" min="4" max="40">
+        </div>
+		<div class="one-half column">
+          <label for="ScenarioWidth">Map Height</label>
+          <input class="u-full-width" id="ScenarioHeight" value="8" min="4" max="40">
+        </div>
+	  </div>
 	  <div class="row">
 		<div class="one-half column">
-          <input class="button" type="submit" value="Change names">
+          <input class="button" type="submit" value="Update">
         </div>
 	  </div>
 	</form>
