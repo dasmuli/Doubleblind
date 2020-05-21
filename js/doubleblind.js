@@ -50,8 +50,6 @@ function deleteMapElementAt(mapX,mapY) {
 	  MapTerrainElements.splice(i,1)
   }
 }
-new MapElement(5,5,WOODS)
-new MapElement(5,10,BUILDINGS)
 
 function Unit(name,description,mapX,mapY,faction) {
   this.name = name;
@@ -94,10 +92,7 @@ Unit.prototype.IsOffboard = function() {
 }
 
 var selectedUnit = undefined  // better in UIControl?
-var testUnit = new Unit('Archer','Cmd 8',5,3,1)
-var testUnit = new Unit('Gardner','Cmd 8',6,3,1)
-var testUnit2 = new Unit('Iron Brigade','Cmd 7',5,5,0)
-var testUnit3 = new Unit('Pettigrew','Cmd 9',Offboard,Offboard,1)
+
 
 
 ///////////////////  Map  /////////////
@@ -507,6 +502,44 @@ map.draw()
 
 ///////////////////  GameEngine  /////////////
 var GameEngine = {
+	ResetDefaultScenario:function() {
+	  this.clearScenario()
+	  ScenarioName = 'McPherson Ridge'
+	  ScenarioDescription = 'Initial phase of Gettysburg'
+	  FactionName[0] = 'Union'
+	  FactionName[1] = 'Confederates'
+	  
+      new Unit('76th NY','Cmd 7',9,5,0)
+      new Unit('56th PA','Cmd 7',8,5,0)
+      new Unit('147th NY','Cmd 7',5,7,0)
+      new Unit('95th NY','Cmd 7',5,4,0)
+	  new Unit('84th NY','Cmd 7',4,4,0)
+	  
+	  new Unit('42th TN','Cmd 7',5,2,1)
+	  new Unit('2nd TN','Cmd 7',4,1,1)
+	  new Unit('1st TN','Cmd 7',3,0,1)
+	  new Unit('13th AL','Cmd 7',2,0,1)
+	  
+	  new Unit('42th MS','Cmd 7',Offboard,Offboard,1)
+	  new Unit('2nd MS','Cmd 7',10,0,1)
+	  new Unit('55th NC','Cmd 7',11,2,1)
+	  
+	  new Unit('2nd WI','Cmd 7',0,7,0)
+	  new Unit('7th WI','Cmd 7',2,7,0)
+	  new Unit('19th WI','Cmd 7',Offboard,Offboard,0)
+	  new Unit('24th WI','Cmd 7',Offboard,Offboard,0)
+	  
+	  new MapElement(9,3,WOODS)
+	  new MapElement(7,0,WOODS)
+	  new MapElement(9,2,WOODS)
+	  new MapElement(4,4,WOODS)
+	  new MapElement(10,7,WOODS)
+	  new MapElement(9,7,WOODS)
+      new MapElement(5,4,BUILDINGS)
+	  
+	  UIController.updateFactionNamesView()
+	  UIController.updateScenarioInformation()
+    },
 	prepareRound:function(faction)
 	{
 	  selectedUnit = undefined
@@ -531,8 +564,17 @@ var GameEngine = {
 	                                        = MapTerrainElements.slice(0)
 	  return scenarioObject
 	},
+	clearScenario:function() {
+	  AllUnits = [];
+	  MapTerrainElements = [];
+	  map.width = 12
+	  map.height = 8
+	},
 	loadFromScenario:function(scenarioAsJSON)
 	{
+	  if(scenarioAsJSON == undefined || scenarioAsJSON == "undefined")
+	    return
+	  this.clearScenario()
       var scenarioObject = JSON.parse(scenarioAsJSON)
 	  ScenarioName = scenarioObject["ScenarioName"]
 	  ScenarioDescription = scenarioObject["ScenarioDescription"]
@@ -545,8 +587,6 @@ var GameEngine = {
 	  else
 	    map.height = scenarioObject["MapHeight"]
 	  FactionName = scenarioObject["FactionName"]
-	  //AllUnits = scenarioObject["AllUnits"]
-	  AllUnits = [];
 	  for(var i = 0; i < scenarioObject.AllUnits.length;i++)
 	  {
 		  var unit = new Unit(
@@ -558,7 +598,6 @@ var GameEngine = {
 		  )
 		  unit.hasMoved = scenarioObject.AllUnits[i].hasMoved
 	  }
-	  MapTerrainElements = [];
 	  if(scenarioObject.MapTerrainElements != undefined)
 	  {
 	    for(var i = 0; i < scenarioObject.MapTerrainElements.length;i++)
@@ -582,9 +621,13 @@ var GameEngine = {
 	autoload:function()
 	{
 	  var scenario = localStorage.getItem('autosave.scenario')
-	  if(scenario != undefined)
+	  if(scenario != undefined && scenario != 'undefined')
 	  {
 		this.loadFromScenario(scenario)
+	  }
+	  else
+	  {
+		this.ResetDefaultScenario()
 	  }
 	},
 }
