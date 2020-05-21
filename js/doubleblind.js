@@ -523,8 +523,8 @@ var GameEngine = {
 	  var scenarioObject = {};
 	  scenarioObject["ScenarioName"]        = ScenarioName
 	  scenarioObject["ScenarioDescription"] = ScenarioDescription
-	  scenarioObject["MapWidth"]            = map.Width
-	  scenarioObject["MapHeight"]           = map.Height
+	  scenarioObject["MapWidth"]            = map.width
+	  scenarioObject["MapHeight"]           = map.height
 	  scenarioObject["FactionName"]         = FactionName.slice(0)
 	  scenarioObject["AllUnits"]            = AllUnits.slice(0)
 	  scenarioObject["MapTerrainElements"]   
@@ -536,8 +536,14 @@ var GameEngine = {
       var scenarioObject = JSON.parse(scenarioAsJSON)
 	  ScenarioName = scenarioObject["ScenarioName"]
 	  ScenarioDescription = scenarioObject["ScenarioDescription"]
-	  map.Width = scenarioObject["MapWidth"]
-	  map.Height = scenarioObject["MapHeight"]
+	  if(scenarioObject["MapWidth"] == undefined)
+        map.width = 12
+      else
+	    map.width = scenarioObject["MapWidth"]
+	  if(scenarioObject["MapHeight"] == undefined)
+	    map.height = 8
+	  else
+	    map.height = scenarioObject["MapHeight"]
 	  FactionName = scenarioObject["FactionName"]
 	  //AllUnits = scenarioObject["AllUnits"]
 	  AllUnits = [];
@@ -739,6 +745,8 @@ var UIController = {
 		  = document.getElementById("ScenarioDescription").value
 		FactionName[0] = this.faction0NameInput.value
 		FactionName[1] = this.faction1NameInput.value
+		map.width = document.getElementById("ScenarioWidth").value
+		map.height = document.getElementById("ScenarioHeight").value
 		this.updateScenarioData()
 	},
 	updateScenarioData: function()
@@ -755,8 +763,11 @@ var UIController = {
 		  = ScenarioDescription
 		document.getElementById("MainMenuScenarioName").innerHTML 
 		  = ScenarioName
-		document.getElementById("MainMenuScenarioDescription").innerHTML 
+		document.getElementById("MainMenuScenarioDescription").      
+		  innerHTML 
 		  = ScenarioDescription
+		document.getElementById("ScenarioWidth").value = map.width
+		document.getElementById("ScenarioHeight").value = map.height
     },
 	updateFactionNamesView: function()
 	{
