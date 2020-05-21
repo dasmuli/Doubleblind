@@ -629,6 +629,21 @@ var GameEngine = {
 	  {
 		this.ResetDefaultScenario()
 	  }
+	  // initial help text shown once
+	  var showInitialDescription =
+	    localStorage.getItem('showInitialDescription')
+	  if(showInitialDescription == undefined 
+	     || showInitialDescription == true) // unlikely
+	  {
+		  localStorage.setItem('showInitialDescription',false)
+		  UIController.showMapNow()
+	  }
+	  else
+	  {
+		  // hide help and set revealed only filter
+		  document.getElementById('BasicHelp').style.display = 'none'
+		  UIController.showMapRevealed()
+	  }
 	},
 }
 
@@ -1004,5 +1019,5 @@ document.getElementById('fileInput').addEventListener('change', function selecte
   };
   reader.readAsText(this.files[0]);
 });
+
 GameEngine.autoload()
-UIController.showMapNow()
