@@ -91,8 +91,22 @@
     <div class="row"  style="margin-top: 5%">
       <div>
         <h4>Main menu</h4>
-		<p>Hand over to the other side.</p>
-		<p id="LastMoveIndicator">Last move: Confederates</p>
+	  </div>
+    </div>
+	<div class="row">
+      <div class="one-half column">
+	    <p id="MainMenuScenarioName">McPherson Ridge</p>
+	  </div>
+	  <div class="one-half column">
+	    <p id="MainMenuScenarioDescription">The initial phase of Gettysburg.</p>
+	  </div>
+    </div>
+	<div class="row">
+      <div class="one-half column">
+	    Hand over to the other side.
+	  </div>
+	  <div class="one-half column">
+	    <p id="LastMoveIndicator">Last move: Confederates</p>
 	  </div>
     </div>
 	<div class="row">
@@ -126,7 +140,7 @@
   
   
   <div class="container" id="EditView">
-    <form onsubmit="UIController.setNewFactionNames(); return false;">  <div class="row"  style="margin-top: 5%">
+    <form onsubmit="UIController.updateScenario(); return false;">  <div class="row"  style="margin-top: 5%">
 		<div class="one-half column">
           <label for="ScenarioName">Scenario name</label>
           <input class="u-full-width" id="ScenarioName" value="McPherson Ridge">

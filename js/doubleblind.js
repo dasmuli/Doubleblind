@@ -1,5 +1,5 @@
 
-///////////////////  Unit  /////////////
+///////////////////  Constants   /////////////
 const Offboard = -3
 const AllFactions = -2
 const MAX_FACTION_STACKING = 2
@@ -9,6 +9,9 @@ const WOODS = 55
 const BUILDINGS = 66
 const HILL = 77
 
+///////////////////  Globals   /////////////
+var ScenarioName = "McPherson Ridge"
+var ScenarioDescription = "The initial phase of Gettysburg."
 var AllUnits = []
 var MapTerrainElements = []
 var FactionName = [ "Unionn", "Confederatess" ]
@@ -518,15 +521,23 @@ var GameEngine = {
 	currentScenarioToObject:function()
 	{
 	  var scenarioObject = {};
-	  scenarioObject["FactionName"] = FactionName.slice(0)
-	  scenarioObject["AllUnits"]    = AllUnits.slice(0)
+	  scenarioObject["ScenarioName"]        = ScenarioName
+	  scenarioObject["ScenarioDescription"] = ScenarioDescription
+	  scenarioObject["MapWidth"]            = map.Width
+	  scenarioObject["MapHeight"]           = map.Height
+	  scenarioObject["FactionName"]         = FactionName.slice(0)
+	  scenarioObject["AllUnits"]            = AllUnits.slice(0)
 	  scenarioObject["MapTerrainElements"]   
-	                                = MapTerrainElements.slice(0)
+	                                        = MapTerrainElements.slice(0)
 	  return scenarioObject
 	},
 	loadFromScenario:function(scenarioAsJSON)
 	{
       var scenarioObject = JSON.parse(scenarioAsJSON)
+	  ScenarioName = scenarioObject["ScenarioName"]
+	  ScenarioDescription = scenarioObject["ScenarioDescription"]
+	  map.Width = scenarioObject["MapWidth"]
+	  map.Height = scenarioObject["MapHeight"]
 	  FactionName = scenarioObject["FactionName"]
 	  //AllUnits = scenarioObject["AllUnits"]
 	  AllUnits = [];
@@ -554,6 +565,7 @@ var GameEngine = {
 	    }
 	  }
 	  UIController.updateFactionNamesView()
+	  UIController.updateScenarioInformation()
 	},
 	autosave:function()
 	{
@@ -719,17 +731,33 @@ var UIController = {
         }
         return new_tbody
 	},
-	setNewFactionNames: function()
+	updateScenario: function()
 	{
+		ScenarioName
+		  = document.getElementById("ScenarioName").value
+		ScenarioDescription
+		  = document.getElementById("ScenarioDescription").value
 		FactionName[0] = this.faction0NameInput.value
 		FactionName[1] = this.faction1NameInput.value
-		this.updateFactionNames()
+		this.updateScenarioData()
 	},
-	updateFactionNames: function()
+	updateScenarioData: function()
 	{
 		this.updateFactionNamesView()
+		this.updateScenarioInformation()
 		GameEngine.autosave()
 	},
+	updateScenarioInformation: function()
+	{
+		document.getElementById("ScenarioName").value
+		  = ScenarioName
+		document.getElementById("ScenarioDescription").value
+		  = ScenarioDescription
+		document.getElementById("MainMenuScenarioName").innerHTML 
+		  = ScenarioName
+		document.getElementById("MainMenuScenarioDescription").innerHTML 
+		  = ScenarioDescription
+    },
 	updateFactionNamesView: function()
 	{
 		// set in edit menu
