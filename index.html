@@ -164,11 +164,11 @@
 	  <div class="row"  style="margin-top: 5%">
 		<div class="one-half column">
           <label for="ScenarioWidth">Map width</label>
-          <input class="u-full-width" id="ScenarioWidth" value="12" min="4" max="40">
+          <input class="u-full-width" id="ScenarioWidth" value="12" min="4" max="40" type="number" required>
         </div>
 		<div class="one-half column">
           <label for="ScenarioWidth">Map Height</label>
-          <input class="u-full-width" id="ScenarioHeight" value="8" min="4" max="40">
+          <input class="u-full-width" id="ScenarioHeight" value="8" min="4" max="40"  type="number" required>
         </div>
 	  </div>
 	  <div class="row">
@@ -263,16 +263,16 @@
 	</div>
 	<div class="row">
       <div   class="three columns">
-        <button onclick="UIController.addWoods()">Terrain woods</button>
+        <button onclick="UIController.addWoods()">Woods</button>
       </div>
 	  <div   class="three columns">
-        <button onclick="UIController.addBuildings()">Terrain buildings</button>
+        <button onclick="UIController.addBuildings()">Buildings</button>
       </div>
 	  <div   class="three columns">
-        <button onclick="UIController.addHills()">Terrain hills</button>
+        <button onclick="UIController.addHills()">Hills</button>
       </div>
 	  <div   class="three columns">
-        <button onclick="UIController.clearTerrain()">Clear terrain</button>
+        <button onclick="UIController.clearTerrain()">Clear</button>
       </div>
 	</div>
   </div>
