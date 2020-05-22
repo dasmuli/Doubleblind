@@ -26,6 +26,10 @@
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href="images/favicon.png">
+  
+  <!-- PWA
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="manifest" href="manifest.webmanifest">
 
 </head>
 <body>
@@ -295,19 +299,18 @@
   
   
   <div class="container" id="About">
-    <div class="row"  style="margin-top: 5%">
+    <div class="row"  style="margin-top: 5%" id="installationHint">
       <div class="one-half column">
-        <h4>Install</h4>
 		<p>This HTML page can be intalled to a local device
 		- it does not require an internet connection except
 		for the initial load. That can be prevented by installing
 		it like a normal app.</p>
 	  </div>
 	  <div class="one-half column">
-        <button onclick="UIController.showMainMenu()">Install</button>
+        <button id="installButton">Install</button>
 	  </div>
     </div>
-	<div class="row">
+	<div class="row" style="margin-top: 5%">
 	   <div class="one-half column">
 			<button onclick="UIController.showMainMenu()">Back</button>
 	   </div>
