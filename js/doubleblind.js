@@ -664,6 +664,7 @@ var UIController = {
 	faction0NameInput : document.querySelector('#Faction0Name'),
 	faction1NameInput : document.querySelector('#Faction1Name'),
 	showMapWarning : document.getElementById("MapViewWarning"),
+	aboutView : document.getElementById("About"),
 	mapViewBackCallback : undefined,
 	firstStart : true,
 	currentEditedUnit : 0,
@@ -696,6 +697,12 @@ var UIController = {
 		this.editView.style.display = "none"
 		this.editWarning.style.display = "none"
 		this.showMapWarning.style.display = "none"
+		this.aboutView.style.display = "none"
+	},
+	showAbout: function()
+	{
+		this.hideEverything()
+		this.aboutView.style.display = "block"
 	},
 	showMapRevealed: function()
 	{
